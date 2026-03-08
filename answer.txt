@@ -1,0 +1,17 @@
+i dont understand about supabase, what on invitation (Pasted Image) meaning "project is restoring"?
+
+and then how to running "jalankan SQL untuk buat tabel templates dan newsletter"  in here (Pasted Image)
+
+and then how to insert data
+
+and then for now i want the image on Public
+"
+Supabase Storage untuk gambar? — Bisa upload screenshot template ke Supabase Storage (gratis 1GB) supaya tidak perlu commit gambar ke repo. Atau tetap pakai /public folder? Rekomendasi: Supabase Storage untuk scalability.
+"
+
+"
+Gambar template: Saat ini pakai gambar1-14.webp (foto wedding). Idealnya diganti screenshot dari masing-masing template undangan. Mau saya bantu generate placeholder atau Anda siapkan sendiri?
+"
+where i should put my image?
+
+change the cost with 80000

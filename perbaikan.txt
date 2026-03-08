@@ -1,0 +1,255 @@
+You are a senior frontend engineer specializing in React animations and modern UI architecture.
+
+I already have a React + Vite + Tailwind project with an animated hero section. The current implementation works but the layout and animation need major improvements.
+
+Your task is to redesign the hero section so the images look small, sparse, and floating around the center card, while keeping smooth animated columns.
+
+Tech stack:
+- React (Vite)
+- TailwindCSS
+- Framer Motion
+- Images loaded from the local /public folder
+
+--------------------------------------------------
+
+PROBLEM 1 — IMAGE SIZE
+
+The current images are too large.
+
+Reduce image size so they appear small and light like floating elements.
+
+Use:
+
+width: 70px
+height: 95px
+object-fit: cover
+border-radius: 18px
+
+All images must have identical width and height to maintain alignment.
+
+--------------------------------------------------
+
+PROBLEM 2 — IMAGE SPACING
+
+The layout currently looks too dense.
+
+Images must NOT form tight vertical stacks like:
+
+img
+img
+img
+
+Instead create large vertical spacing like:
+
+img
+
+
+img
+
+
+img
+
+Use vertical gaps around:
+
+100px – 120px
+
+This creates a light and airy layout.
+
+--------------------------------------------------
+
+PROBLEM 3 — COLUMN SPACING
+
+Columns also need more horizontal space.
+
+Use column spacing around:
+
+120px – 160px
+
+The images should look scattered across the screen rather than tightly packed.
+
+--------------------------------------------------
+
+PROBLEM 4 — STAGGERED GRID
+
+Columns should be vertically offset to create a staggered floating layout.
+
+Example pattern:
+
+Column 1:
+image
+gap
+image
+gap
+image
+
+Column 2:
+gap
+image
+gap
+image
+gap
+
+Column 3:
+image
+gap
+image
+gap
+image
+
+Column 4:
+gap
+image
+gap
+image
+gap
+
+This creates the floating scattered layout around the center card.
+
+--------------------------------------------------
+
+PROBLEM 5 — PAGE TOO SHORT
+
+The page currently does not allow enough scrolling for animation.
+
+Implement a scroll-driven hero similar to animation-heavy websites like animejs.com.
+
+Correct structure:
+
+HeroScrollWrapper
+height: 300vh
+
+Inside:
+
+StickyHero
+position: sticky
+top: 0
+height: 100vh
+
+The animated columns and center card must live inside the sticky container.
+
+This allows animation to run while the user scrolls.
+
+--------------------------------------------------
+
+PROBLEM 6 — COLUMN ANIMATION
+
+Create animated vertical image columns.
+
+Columns should move infinitely with alternating directions:
+
+Column 1 → move upward
+Column 2 → move downward
+Column 3 → move upward
+Column 4 → move downward
+
+Each column should have slightly different animation speeds to create subtle depth.
+
+Example durations:
+
+18s
+22s
+24s
+20s
+
+Use:
+
+transform: translateY()
+
+for GPU-accelerated animations.
+
+--------------------------------------------------
+
+PROBLEM 7 — FADE EDGES
+
+Images should fade at the top and bottom of the screen.
+
+Use a CSS mask gradient or overlay gradient so images smoothly appear and disappear.
+
+Concept:
+
+transparent → visible → visible → transparent
+
+--------------------------------------------------
+
+PROBLEM 8 — CENTER CARD
+
+Keep the center hero card unchanged.
+
+Style:
+
+glassmorphism
+rounded corners
+backdrop blur
+semi-transparent background
+
+Example Tailwind:
+
+backdrop-blur-lg
+bg-white/40
+rounded-3xl
+shadow-xl
+
+Content:
+
+Title:
+HAPPY WEDDING
+
+Subtitle:
+Beautiful, customizable digital invitations for your perfect day. Instantly download and print.
+
+Buttons:
+Explore Templates
+Request Custom Design
+
+--------------------------------------------------
+
+PROBLEM 9 — USE LOCAL IMAGES
+
+Images must come from the project public folder.
+
+Example:
+
+public/
+   img1.jpg
+   img2.jpg
+   img3.jpg
+
+Usage in React:
+
+const images = [
+"/img1.jpg",
+"/img2.jpg",
+"/img3.jpg"
+]
+
+Do NOT use external placeholder images.
+
+--------------------------------------------------
+
+PROBLEM 10 — RESPONSIVE LAYOUT
+
+Use different column counts depending on screen size:
+
+Desktop:
+4 columns
+
+Tablet:
+3 columns
+
+Mobile:
+2 columns
+
+--------------------------------------------------
+
+OUTPUT REQUIREMENTS
+
+Provide:
+
+1. Updated React component structure
+2. Improved layout architecture
+3. Framer Motion animation logic
+4. Correct usage of local images
+5. Responsive layout implementation
+6. Clean readable production-level code
+
+Focus on smooth 60fps animation and modern premium landing page design.

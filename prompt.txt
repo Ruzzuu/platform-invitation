@@ -1,0 +1,162 @@
+You are a senior frontend engineer specializing in React animations and modern UI design.
+
+Your task is to build a modern wedding invitation landing page hero section with animated image columns and a blurred center content card.
+
+Tech stack:
+- React (Vite)
+- TailwindCSS
+- Framer Motion for animations
+- Fully responsive
+- Clean reusable component structure
+
+Goal:
+Create a premium hero section where multiple columns of images move vertically in alternating directions, with a blurred center card that highlights the main title.
+
+Layout description:
+
+1. Full screen hero section
+Height: 100vh
+Width: 100%
+
+Background: light neutral background
+
+2. Animated Image Columns
+Display multiple vertical columns of small images across the screen.
+
+Rules:
+- Each column contains stacked images
+- Images have rounded corners
+- Images are portrait rectangles
+- Example size: 120px x 160px
+- Gap between images: 24px
+
+Animation behavior:
+- Columns move vertically in infinite loops
+- Alternate directions:
+
+Column 1 → move UP
+Column 2 → move DOWN
+Column 3 → move UP
+Column 4 → move DOWN
+Column 5 → move UP
+
+Animation speed should be slow and smooth (luxury feeling).
+
+The animation should loop infinitely.
+
+Columns should have slightly different speeds to create a subtle parallax depth effect.
+
+Example speeds:
+column1: 20s
+column2: 25s
+column3: 18s
+column4: 22s
+column5: 26s
+
+3. Edge Fade Effect
+Images should fade in and fade out at the top and bottom of the screen.
+
+This should be implemented using CSS mask-image or gradient overlays.
+
+Top and bottom edges should gradually reduce opacity so images appear and disappear smoothly instead of abruptly entering and leaving the screen.
+
+Example concept:
+
+transparent → visible → visible → transparent
+
+4. Center Content Card
+In the middle of the hero section, place a large rounded card.
+
+Properties:
+- Positioned in the center
+- Rounded corners
+- Slight transparency
+- Glassmorphism effect
+
+Use:
+backdrop-blur
+semi-transparent white background
+
+Example styling:
+
+backdrop-blur-lg
+bg-white/40
+rounded-3xl
+shadow-xl
+
+Card content:
+
+Title:
+"HAPPY WEDDING"
+
+Typography:
+Large serif style
+Elegant wedding aesthetic
+Pink color
+
+Subtitle text:
+"Beautiful, customizable digital invitations for your perfect day. Instantly download and print."
+
+Buttons:
+Button 1:
+"Explore Templates"
+pink background
+
+Button 2:
+"Request Custom Design"
+light grey background
+
+5. Background Blur Effect
+The center card should blur the moving image background behind it using backdrop-blur.
+
+This makes the center card stand out visually.
+
+6. Scroll Interaction
+The hero section should support a subtle scroll interaction.
+
+Behavior:
+- As the user scrolls slightly, the image columns should feel like they move with subtle parallax.
+- The hero section should remain visible until the next section scrolls into view.
+
+7. Mobile Responsiveness
+Desktop:
+5–7 columns
+
+Tablet:
+4 columns
+
+Mobile:
+2 columns
+
+Ensure layout does not break.
+
+8. Image Data
+Use placeholder images for now.
+
+Example sources:
+Unsplash wedding photos
+
+9. Code Structure
+Use clean React component architecture:
+
+/components
+    HeroGallery.jsx
+    ImageColumn.jsx
+    CenterCard.jsx
+
+HeroGallery handles layout and columns.
+
+ImageColumn handles vertical animation.
+
+CenterCard handles text and buttons.
+
+10. Output Requirements
+Provide:
+
+1. Full React component code
+2. Tailwind styles
+3. Framer Motion animation logic
+4. Example image array
+5. Responsive layout handling
+
+The result should look like a premium wedding invitation landing page hero section with smooth vertical animated image columns and a centered blurred card.
