@@ -7,13 +7,13 @@ import CenterCard from './CenterCard'
  * Images distributed across gambar1–14 with wrap-around.
  */
 const COLUMNS = [
-  { images: ['/gambar1.webp',  '/gambar8.webp',  '/gambar14.webp', '/gambar5.webp'],  direction: 'up',   speed: 17 },
-  { images: ['/gambar2.webp',  '/gambar9.webp',  '/gambar6.webp',  '/gambar13.webp'], direction: 'down', speed: 20 },
-  { images: ['/gambar3.webp',  '/gambar10.webp', '/gambar7.webp',  '/gambar4.webp'],  direction: 'up',   speed: 23 },
-  { images: ['/gambar4.webp',  '/gambar11.webp', '/gambar1.webp',  '/gambar8.webp'],  direction: 'down', speed: 18 },
-  { images: ['/gambar5.webp',  '/gambar12.webp', '/gambar2.webp',  '/gambar9.webp'],  direction: 'up',   speed: 19 },
-  { images: ['/gambar6.webp',  '/gambar13.webp', '/gambar3.webp',  '/gambar10.webp'], direction: 'down', speed: 17 },
-  { images: ['/gambar7.webp',  '/gambar14.webp', '/gambar4.webp',  '/gambar11.webp'], direction: 'up',   speed: 22 },
+  { images: ['/gambar1.webp',  '/gambar8.webp',  '/gambar14.webp', '/gambar5.webp'],  direction: 'up',   speed: 10 },
+  { images: ['/gambar2.webp',  '/gambar9.webp',  '/gambar6.webp',  '/gambar13.webp'], direction: 'down', speed: 12 },
+  { images: ['/gambar3.webp',  '/gambar10.webp', '/gambar7.webp',  '/gambar4.webp'],  direction: 'up',   speed: 14 },
+  { images: ['/gambar4.webp',  '/gambar11.webp', '/gambar1.webp',  '/gambar8.webp'],  direction: 'down', speed: 11 },
+  { images: ['/gambar5.webp',  '/gambar12.webp', '/gambar2.webp',  '/gambar9.webp'],  direction: 'up',   speed: 11 },
+  { images: ['/gambar6.webp',  '/gambar13.webp', '/gambar3.webp',  '/gambar10.webp'], direction: 'down', speed: 10 },
+  { images: ['/gambar7.webp',  '/gambar14.webp', '/gambar4.webp',  '/gambar11.webp'], direction: 'up',   speed: 13 },
 ]
 
 /*
@@ -40,7 +40,7 @@ export default function HeroGallery() {
   const smoothVelocity = useSpring(scrollVelocity, { damping: 25, stiffness: 400 })
   // At rest = 1×, fast scroll = up to 25×
   // [-500,0,500] → reacts to gentler scrolls; output [25,1,25] → stronger boost at peak
-  const velocityFactor = useTransform(smoothVelocity, [-300, 0, 300], [25, 1, 25], { clamp: false })
+  const velocityFactor = useTransform(smoothVelocity, [-200, 0, 200], [25, 1, 25], { clamp: false })
 
   return (
     /* ── 300vh scroll wrapper so the hero stays visible longer ── */
