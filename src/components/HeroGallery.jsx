@@ -7,13 +7,13 @@ import CenterCard from './CenterCard'
  * Images distributed across gambar1–14 with wrap-around.
  */
 const COLUMNS = [
-  { images: ['/gambar1.webp',  '/gambar8.webp',  '/gambar14.webp', '/gambar5.webp'],  direction: 'up',   speed: 20 },
-  { images: ['/gambar2.webp',  '/gambar9.webp',  '/gambar6.webp',  '/gambar13.webp'], direction: 'down', speed: 24 },
-  { images: ['/gambar3.webp',  '/gambar10.webp', '/gambar7.webp',  '/gambar4.webp'],  direction: 'up',   speed: 28 },
-  { images: ['/gambar4.webp',  '/gambar11.webp', '/gambar1.webp',  '/gambar8.webp'],  direction: 'down', speed: 22 },
-  { images: ['/gambar5.webp',  '/gambar12.webp', '/gambar2.webp',  '/gambar9.webp'],  direction: 'up',   speed: 22 },
-  { images: ['/gambar6.webp',  '/gambar13.webp', '/gambar3.webp',  '/gambar10.webp'], direction: 'down', speed: 20 },
-  { images: ['/gambar7.webp',  '/gambar14.webp', '/gambar4.webp',  '/gambar11.webp'], direction: 'up',   speed: 26 },
+  { images: ['/gambar1.webp',  '/gambar8.webp',  '/gambar14.webp', '/gambar5.webp'],  direction: 'up',   speed: 10 },
+  { images: ['/gambar2.webp',  '/gambar9.webp',  '/gambar6.webp',  '/gambar13.webp'], direction: 'down', speed: 12 },
+  { images: ['/gambar3.webp',  '/gambar10.webp', '/gambar7.webp',  '/gambar4.webp'],  direction: 'up',   speed: 14 },
+  { images: ['/gambar4.webp',  '/gambar11.webp', '/gambar1.webp',  '/gambar8.webp'],  direction: 'down', speed: 11 },
+  { images: ['/gambar5.webp',  '/gambar12.webp', '/gambar2.webp',  '/gambar9.webp'],  direction: 'up',   speed: 11 },
+  { images: ['/gambar6.webp',  '/gambar13.webp', '/gambar3.webp',  '/gambar10.webp'], direction: 'down', speed: 10 },
+  { images: ['/gambar7.webp',  '/gambar14.webp', '/gambar4.webp',  '/gambar11.webp'], direction: 'up',   speed: 13 },
 ]
 
 /*
@@ -38,8 +38,8 @@ export default function HeroGallery() {
   const { scrollY } = useScroll()
   const scrollVelocity = useVelocity(scrollY)
   const smoothVelocity = useSpring(scrollVelocity, { damping: 25, stiffness: 400 })
-  // At rest = 1×, fast scroll = up to 18×
-  const velocityFactor = useTransform(smoothVelocity, [-500, 0, 500], [20, 1, 20], { clamp: false })
+  // At rest = 1×, fast scroll = up to 8×
+  const velocityFactor = useTransform(smoothVelocity, [-800, 0, 800], [8, 1, 8], { clamp: false })
 
   return (
     /* ── 300vh scroll wrapper so the hero stays visible longer ── */
