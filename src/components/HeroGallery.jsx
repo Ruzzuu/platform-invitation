@@ -39,7 +39,7 @@ export default function HeroGallery() {
   const scrollVelocity = useVelocity(scrollY)
   const smoothVelocity = useSpring(scrollVelocity, { damping: 25, stiffness: 400 })
   // At rest = 1×, fast scroll = up to 18×
-  const velocityFactor = useTransform(smoothVelocity, [-800, 0, 800], [18, 1, 18], { clamp: false })
+  const velocityFactor = useTransform(smoothVelocity, [-500, 0, 500], [20, 1, 20], { clamp: false })
 
   return (
     /* ── 300vh scroll wrapper so the hero stays visible longer ── */
