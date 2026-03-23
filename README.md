@@ -26,7 +26,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 # Navigate to project directory
-cd C:\Users\fairu\home\allproject\aMainWebsiteUdangan
+cd C:..\allproject\aMainWebsiteUdangan
 
 # Install dependencies
 npm install
