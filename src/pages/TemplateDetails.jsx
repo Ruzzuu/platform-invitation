@@ -94,6 +94,7 @@ export default function TemplateDetails() {
   }
 
   const images = product.images ?? ['/gambar1.webp']
+  const previewUrl = product.renderer_key ? `/preview/${product.renderer_key}` : product.demo_url
 
   return (
     <>
@@ -167,7 +168,7 @@ export default function TemplateDetails() {
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
-                {product.demo_url ? (
+                {previewUrl ? (
                   <button
                     onClick={scrollToPreview}
                     className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border-2 border-pink-400 text-pink-500 font-semibold hover:bg-pink-50 transition text-sm"
@@ -267,7 +268,7 @@ export default function TemplateDetails() {
       </section>
 
       {/* ───── Live Preview ───── */}
-      {product.demo_url && (
+      {previewUrl && (
         <section ref={previewRef} className="bg-gray-50 py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-6">
             <FadeIn>
@@ -281,7 +282,7 @@ export default function TemplateDetails() {
                   <div className="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-5 bg-black rounded-full z-10" />
                   <div className="rounded-[2rem] overflow-hidden bg-white" style={{ height: '780px' }}>
                     <iframe
-                      src={product.demo_url}
+                      src={previewUrl}
                       title={`Preview ${product.name}`}
                       className="w-full h-full border-0"
                       loading="lazy"
@@ -298,9 +299,9 @@ export default function TemplateDetails() {
                 </button>
               )}
 
-              {product.demo_url && (
+              {previewUrl && (
                 <a
-                  href={product.demo_url}
+                  href={previewUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-pink-500 hover:underline"

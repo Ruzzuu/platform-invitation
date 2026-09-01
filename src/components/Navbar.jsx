@@ -16,7 +16,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link to="/" className="font-serif text-2xl font-bold tracking-tight text-black">
-          Eterna<span className="text-pink-500">.</span>
+          Lembaranbaru<span className="text-pink-500">.</span>
         </Link>
 
         {/* Desktop nav */}

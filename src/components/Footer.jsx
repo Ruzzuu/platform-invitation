@@ -29,7 +29,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <h3 className="font-serif text-xl font-bold text-white mb-3">
-              Eterna<span className="text-pink-400">.</span>
+              Lembaranbaru<span className="text-pink-400">.</span>
             </h3>
             <p className="text-sm leading-relaxed text-white/60">
               Creating beautiful, accessible design for life's most important moments.

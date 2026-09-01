@@ -25,4 +25,21 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+  .spin-paused { animation-play-state: paused; }
+  .anim-delay-100 { animation-delay: .1s; }
+  .anim-delay-200 { animation-delay: .2s; }
+  .anim-delay-300 { animation-delay: .3s; }
+  .anim-delay-400 { animation-delay: .4s; }
+  .anim-delay-500 { animation-delay: .5s; }
+}
+
+.pink-flower-theme {
+  --color-cream: 255 248 240; --color-cream-dark: 245 237 224;
+  --color-blush: 232 160 191; --color-blush-dark: 199 125 162; --color-blush-light: 243 208 224;
+  --color-sage: 143 185 150; --color-sage-dark: 106 155 120; --color-dark: 61 50 41; --color-warm-gray: 138 126 116;
+}
+.javanese-theme {
+  --color-cream: 10 9 4; --color-cream-dark: 20 18 8;
+  --color-blush: 212 175 55; --color-blush-dark: 163 128 31; --color-blush-light: 74 60 28;
+  --color-sage: 143 112 34; --color-sage-dark: 99 76 20; --color-dark: 253 251 242; --color-warm-gray: 204 162 82;
 }
