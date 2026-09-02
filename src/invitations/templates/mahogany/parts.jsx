@@ -43,13 +43,16 @@ function Countdown() {
   )
 }
 
-function PhotoBackground({ src, contain = false, priority = false }) {
+function PhotoBackground({ src, contain = false, priority = false, scale = 1 }) {
+  const imageClass = contain
+    ? `mahogany-responsive-photo ${scale !== 1 ? 'origin-top scale-[1.25]' : ''}`
+    : 'h-full w-full object-cover object-center'
   return (
     <div className="absolute inset-0 z-0 overflow-hidden bg-mahogany" aria-hidden="true">
       <img
         src={src}
         alt=""
-        className={contain ? 'mahogany-responsive-photo' : 'h-full w-full object-cover object-center'}
+        className={imageClass}
         loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : 'auto'}
       />
@@ -62,7 +65,7 @@ export function MahoganyCover({ onOpen }) {
   const { bride, groom, media } = invitation
   return (
     <div className="relative flex min-h-[100dvh] select-none flex-col items-center justify-between overflow-hidden text-center text-ivory">
-      <PhotoBackground src={media.coverImageUrl} contain priority />
+      <PhotoBackground src={media.coverImageUrl} contain priority scale={1.25} />
       <div className="absolute inset-0 bg-mahogany/55" />
       <div className="absolute inset-0 bg-gradient-to-t from-mahogany/95 via-transparent to-mahogany/65" />
 
