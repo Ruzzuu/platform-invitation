@@ -60,8 +60,11 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_templates_renderer_key ON templates(render
 CREATE TABLE IF NOT EXISTS invitations (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   template_id UUID NOT NULL REFERENCES templates(id) ON DELETE RESTRICT,
+  template_slug TEXT NOT NULL,
   slug TEXT NOT NULL UNIQUE CHECK (slug = lower(slug) AND slug ~ '^[a-z0-9]+(?:-[a-z0-9]+)*$' AND char_length(slug) BETWEEN 3 AND 100),
-  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'archived')),
+  couple_name TEXT NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT true,
   title TEXT NOT NULL CHECK (char_length(title) BETWEEN 3 AND 160),
   bride_short_name TEXT NOT NULL CHECK (char_length(bride_short_name) BETWEEN 1 AND 80),
   bride_full_name TEXT NOT NULL CHECK (char_length(bride_full_name) BETWEEN 1 AND 160),
@@ -92,6 +95,8 @@ CREATE TABLE IF NOT EXISTS invitations (
   bride_family_detail TEXT,
   groom_family_title TEXT,
   groom_family_detail TEXT,
+  expires_at TIMESTAMPTZ,
+  archived_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -100,8 +105,11 @@ CREATE TABLE IF NOT EXISTS invitations (
 -- These keep existing rows and only add the columns needed by the unified app.
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS id UUID DEFAULT gen_random_uuid();
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS template_id UUID REFERENCES templates(id) ON DELETE RESTRICT;
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS template_slug TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS slug TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'draft';
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS couple_name TEXT;
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS title TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS bride_short_name TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS bride_full_name TEXT;
@@ -132,11 +140,16 @@ ALTER TABLE invitations ADD COLUMN IF NOT EXISTS bride_family_title TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS bride_family_detail TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS groom_family_title TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS groom_family_detail TEXT;
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ;
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS archived_at TIMESTAMPTZ;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
 
 UPDATE invitations SET status = 'draft' WHERE status IS NULL;
 UPDATE invitations SET id = gen_random_uuid() WHERE id IS NULL;
+UPDATE invitations i SET template_slug = t.slug FROM templates t WHERE i.template_id = t.id AND i.template_slug IS NULL;
+UPDATE invitations SET couple_name = concat_ws(' & ', bride_short_name, groom_short_name) WHERE couple_name IS NULL;
+UPDATE invitations SET is_active = true WHERE is_active IS NULL;
 UPDATE invitations SET timezone = 'Asia/Jakarta' WHERE timezone IS NULL;
 UPDATE invitations SET location_label = '' WHERE location_label IS NULL;
 UPDATE invitations SET events = '[]'::jsonb WHERE events IS NULL;
@@ -145,13 +158,9 @@ UPDATE invitations SET gallery_urls = '{}' WHERE gallery_urls IS NULL;
 UPDATE invitations SET created_at = NOW() WHERE created_at IS NULL;
 UPDATE invitations SET updated_at = NOW() WHERE updated_at IS NULL;
 
-DO $$ BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_constraint WHERE conname = 'invitations_status_check'
-  ) THEN
-    ALTER TABLE invitations ADD CONSTRAINT invitations_status_check CHECK (status IN ('draft', 'published')) NOT VALID;
-  END IF;
-END $$;
+ALTER TABLE invitations DROP CONSTRAINT IF EXISTS invitations_status_check;
+ALTER TABLE invitations ADD CONSTRAINT invitations_status_check
+  CHECK (status IN ('draft', 'published', 'archived')) NOT VALID;
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_invitations_slug_unique ON invitations(slug);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_invitations_id_unique ON invitations(id);
@@ -202,13 +211,35 @@ ALTER TABLE newsletter ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Public templates are viewable by everyone" ON templates;
 CREATE POLICY "Public templates are viewable by everyone" ON templates FOR SELECT USING (true);
 DROP POLICY IF EXISTS "Published invitations are publicly viewable" ON invitations;
-CREATE POLICY "Published invitations are publicly viewable" ON invitations FOR SELECT USING (status = 'published');
+CREATE POLICY "Published invitations are publicly viewable" ON invitations FOR SELECT USING (
+  status = 'published'
+  AND is_active = true
+  AND (expires_at IS NULL OR expires_at > NOW())
+);
 DROP POLICY IF EXISTS "Public can RSVP to published invitations" ON invitation_rsvps;
-CREATE POLICY "Public can RSVP to published invitations" ON invitation_rsvps FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM invitations WHERE invitations.id = invitation_id AND invitations.status = 'published'));
+CREATE POLICY "Public can RSVP to published invitations" ON invitation_rsvps FOR INSERT WITH CHECK (EXISTS (
+  SELECT 1 FROM invitations
+  WHERE invitations.id = invitation_id
+    AND invitations.status = 'published'
+    AND invitations.is_active = true
+    AND (invitations.expires_at IS NULL OR invitations.expires_at > NOW())
+));
 DROP POLICY IF EXISTS "Published invitation wishes are publicly viewable" ON invitation_wishes;
-CREATE POLICY "Published invitation wishes are publicly viewable" ON invitation_wishes FOR SELECT USING (EXISTS (SELECT 1 FROM invitations WHERE invitations.id = invitation_id AND invitations.status = 'published'));
+CREATE POLICY "Published invitation wishes are publicly viewable" ON invitation_wishes FOR SELECT USING (EXISTS (
+  SELECT 1 FROM invitations
+  WHERE invitations.id = invitation_id
+    AND invitations.status = 'published'
+    AND invitations.is_active = true
+    AND (invitations.expires_at IS NULL OR invitations.expires_at > NOW())
+));
 DROP POLICY IF EXISTS "Public can wish published invitations" ON invitation_wishes;
-CREATE POLICY "Public can wish published invitations" ON invitation_wishes FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM invitations WHERE invitations.id = invitation_id AND invitations.status = 'published'));
+CREATE POLICY "Public can wish published invitations" ON invitation_wishes FOR INSERT WITH CHECK (EXISTS (
+  SELECT 1 FROM invitations
+  WHERE invitations.id = invitation_id
+    AND invitations.status = 'published'
+    AND invitations.is_active = true
+    AND (invitations.expires_at IS NULL OR invitations.expires_at > NOW())
+));
 DROP POLICY IF EXISTS "Newsletter inserts are allowed" ON newsletter;
 CREATE POLICY "Newsletter inserts are allowed" ON newsletter FOR INSERT WITH CHECK (char_length(email) BETWEEN 3 AND 320);
 

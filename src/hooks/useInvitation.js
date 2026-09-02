@@ -25,6 +25,12 @@ export function useInvitation(slug) {
         return
       }
 
+      const expired = invitation.expires_at && new Date(invitation.expires_at).getTime() <= Date.now()
+      if (invitation.is_active === false || expired) {
+        setState({ data: null, loading: false, error: null })
+        return
+      }
+
       // Older rows may have template_slug but no template_id. Support both
       // forms so existing invitations do not need to be recreated.
       const templateQuery = invitation.template_id
