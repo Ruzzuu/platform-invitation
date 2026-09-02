@@ -90,8 +90,8 @@ BEGIN
     bride_short_name, bride_full_name, bride_parents, bride_photo_url,
     groom_short_name, groom_full_name, groom_parents, groom_photo_url,
     wedding_at, timezone, location_label, quote_text, quote_source, intro_text,
-    events, love_story, cover_image_url, secondary_image_url, event_image_url,
-    rsvp_background_url, gallery_urls, music_url, music_credit, closing_text,
+    events, love_story, cover_image_url, secondary_image_url, home_background_url, event_image_url,
+    rsvp_background_url, closing_background_url, gallery_urls, music_url, music_credit, closing_text,
     closing_greeting, bride_family_title, bride_family_detail,
     groom_family_title, groom_family_detail, gift, expires_at, archived_at
   ) VALUES (
@@ -107,7 +107,8 @@ BEGIN
     nullif(p_data->>'quote_text', ''), nullif(p_data->>'quote_source', ''), nullif(p_data->>'intro_text', ''),
     v_events, v_love_story,
     nullif(btrim(p_data->>'cover_image_url'), ''), nullif(btrim(p_data->>'secondary_image_url'), ''),
-    nullif(btrim(p_data->>'event_image_url'), ''), nullif(btrim(p_data->>'rsvp_background_url'), ''),
+    nullif(btrim(p_data->>'home_background_url'), ''), nullif(btrim(p_data->>'event_image_url'), ''),
+    nullif(btrim(p_data->>'rsvp_background_url'), ''), nullif(btrim(p_data->>'closing_background_url'), ''),
     ARRAY(SELECT jsonb_array_elements_text(v_gallery)),
     nullif(btrim(p_data->>'music_url'), ''), nullif(p_data->>'music_credit', ''),
     nullif(p_data->>'closing_text', ''), nullif(p_data->>'closing_greeting', ''),

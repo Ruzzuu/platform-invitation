@@ -87,8 +87,10 @@ CREATE TABLE IF NOT EXISTS invitations (
   love_story JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(love_story) = 'array'),
   cover_image_url TEXT,
   secondary_image_url TEXT,
+  home_background_url TEXT,
   event_image_url TEXT,
   rsvp_background_url TEXT,
+  closing_background_url TEXT,
   gallery_urls TEXT[] NOT NULL DEFAULT '{}',
   music_url TEXT,
   music_credit TEXT,
@@ -135,6 +137,8 @@ ALTER TABLE invitations ADD COLUMN IF NOT EXISTS cover_image_url TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS secondary_image_url TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS event_image_url TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS rsvp_background_url TEXT;
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS home_background_url TEXT;
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS closing_background_url TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS gallery_urls TEXT[] DEFAULT '{}';
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS music_url TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS music_credit TEXT;

@@ -62,8 +62,10 @@ export function createSampleInvitation(rendererKey = 'pink-flower') {
     media: {
       coverImageUrl: isMahogany ? `${MAHOGANY_SOURCE_ASSETS}/together.jpeg` : isDark ? `${base}/foto.webp` : `${base}/pose1.webp`,
       secondaryImageUrl: isMahogany ? `${MAHOGANY_SOURCE_ASSETS}/together.jpeg` : isDark ? `${base}/foto.webp` : `${base}/pose2.webp`,
+      homeBackgroundUrl: isMahogany ? `${MAHOGANY_SOURCE_ASSETS}/together.jpeg` : isDark ? `${base}/foto.webp` : `${base}/pose2.webp`,
       eventImageUrl: isMahogany ? `${MAHOGANY_SOURCE_ASSETS}/together.jpeg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
       rsvpBackgroundUrl: isMahogany ? `${MAHOGANY_SOURCE_ASSETS}/together.jpeg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
+      closingBackgroundUrl: isMahogany ? `${MAHOGANY_SOURCE_ASSETS}/together.jpeg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
       musicUrl: isMahogany ? `${MAHOGANY_SOURCE_ASSETS}/wedding-music.mp3` : isDark ? `${base}/Nadhif Basalamah kota ini tak sama tanpamu.mp3` : isJavanese ? `${base}/Epic Orchestra Java Cinematic Javanese Orchestra Background Music.mp3` : '',
       musicCredit: isMahogany ? 'Nadhif Basalamah - Bergema Sampai Selamanya' : isJavanese ? 'Javanese Cinematic Orchestra' : 'Lagu pilihan mempelai',
       galleryUrls: isMahogany
@@ -121,8 +123,10 @@ export function normalizeInvitationRow(row) {
     media: {
       coverImageUrl: row.cover_image_url || fallback.media.coverImageUrl,
       secondaryImageUrl: row.secondary_image_url || fallback.media.secondaryImageUrl,
+      homeBackgroundUrl: row.home_background_url || row.secondary_image_url || fallback.media.homeBackgroundUrl,
       eventImageUrl: row.event_image_url || fallback.media.eventImageUrl,
       rsvpBackgroundUrl: row.rsvp_background_url || row.event_image_url || fallback.media.rsvpBackgroundUrl,
+      closingBackgroundUrl: row.closing_background_url || row.rsvp_background_url || fallback.media.closingBackgroundUrl,
       musicUrl: row.music_url || '',
       musicCredit: row.music_credit || '',
       galleryUrls: row.gallery_urls?.length ? row.gallery_urls : fallback.media.galleryUrls,

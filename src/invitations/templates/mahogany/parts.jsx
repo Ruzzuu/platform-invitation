@@ -102,7 +102,7 @@ export function MahoganyHome() {
   return (
     <div className="min-h-full bg-mahogany pb-14 text-ivory">
       <div className="relative min-h-[220px] overflow-hidden px-6 pb-6 pt-8">
-        <PhotoBackground src={media.secondaryImageUrl} />
+        <PhotoBackground src={media.homeBackgroundUrl} />
         <div className="absolute inset-0 bg-mahogany/45" />
         <div className="absolute inset-0 bg-gradient-to-t from-mahogany via-transparent to-mahogany/45" />
         <div className="relative z-10 flex flex-col items-center text-center">
@@ -165,7 +165,7 @@ export function MahoganyEvents() {
   return (
     <div className="min-h-full bg-mahogany pb-10">
       <div className="relative overflow-hidden px-6 pb-14 pt-10 text-center text-ivory">
-        <PhotoBackground src={invitation.media.secondaryImageUrl} contain />
+        <PhotoBackground src={invitation.media.eventImageUrl} contain />
         <div className="absolute inset-0 bg-mahogany/55" />
         <div className="absolute inset-0 bg-gradient-to-t from-mahogany via-transparent to-mahogany/40" />
         <FadeIn className="relative z-10">
@@ -371,7 +371,7 @@ export function MahoganyClosing() {
   const { invitation } = useInvitationContext()
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-20 text-center text-ivory">
-      <PhotoBackground src={invitation.media.coverImageUrl} contain />
+      <PhotoBackground src={invitation.media.closingBackgroundUrl} contain />
       <div className="absolute inset-0 bg-mahogany/80" />
       <div className="absolute inset-0 bg-gradient-to-b from-mahogany via-transparent to-mahogany/95" />
       <div className="absolute left-6 top-6 h-16 w-16 rounded-tl-3xl border-l-2 border-t-2 border-ivory opacity-70" />
