@@ -46,14 +46,14 @@ export function createSampleInvitation(rendererKey = 'pink-flower') {
       { title: 'Menikah', year: '2026', text: 'Kami mengikat janji suci dan memulai perjalanan baru.' },
     ],
     media: {
-      coverImageUrl: isMahogany ? `${base}/cover.png` : isDark ? `${base}/foto.webp` : `${base}/pose1.webp`,
-      secondaryImageUrl: isMahogany ? `${base}/page1.png` : isDark ? `${base}/foto.webp` : `${base}/pose2.webp`,
-      eventImageUrl: isMahogany ? `${base}/page3.png` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
-      rsvpBackgroundUrl: isMahogany ? `${base}/page6.png` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
+      coverImageUrl: isMahogany ? `${base}/walk.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose1.webp`,
+      secondaryImageUrl: isMahogany ? `${base}/couple.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose2.webp`,
+      eventImageUrl: isMahogany ? `${base}/walk.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
+      rsvpBackgroundUrl: isMahogany ? `${base}/walk.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
       musicUrl: isDark ? `${base}/Nadhif Basalamah kota ini tak sama tanpamu.mp3` : isJavanese ? `${base}/Epic Orchestra Java Cinematic Javanese Orchestra Background Music.mp3` : '',
       musicCredit: isJavanese ? 'Javanese Cinematic Orchestra' : 'Lagu pilihan mempelai',
       galleryUrls: isMahogany
-        ? [`${base}/page1.png`, `${base}/page2.png`, `${base}/page3.png`, `${base}/page4.png`, `${base}/page5.png`, `${base}/page6.png`, `${base}/page7.png`, `${base}/page8.png`]
+        ? [`${base}/couple.jpg`, `${base}/bride.jpg`, `${base}/groom.jpg`, `${base}/walk.jpg`, `${base}/rings.jpg`]
         : isDark
         ? [`${base}/foto.webp`, `${base}/laki.webp`, `${base}/perempuan.webp`]
         : [`${base}/pose1.webp`, `${base}/pose2.webp`, `${base}/pose3.webp`, `${base}/pria.webp`, `${base}/wanita.webp`],
