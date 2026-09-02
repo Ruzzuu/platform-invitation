@@ -34,7 +34,7 @@ function Countdown() {
         ['Menit', time.minutes],
         ['Detik', time.seconds],
       ].map(([label, value]) => (
-        <div key={label} className="min-w-[62px] rounded-xl border border-ivory/20 bg-ivory/10 px-2 py-3 text-center shadow-md backdrop-blur-sm">
+        <div key={label} className="min-w-[64px] rounded-xl border border-ivory/20 bg-ivory/10 px-3 py-2.5 text-center shadow-md backdrop-blur-sm">
           <p className="text-2xl font-bold leading-none text-ivory tabular-nums">{String(value).padStart(2, '0')}</p>
           <p className="mt-1 text-[9px] font-medium uppercase tracking-wide text-ivory/70">{label}</p>
         </div>
@@ -61,27 +61,27 @@ export function MahoganyCover({ onOpen }) {
   const { invitation, guestName } = useInvitationContext()
   const { bride, groom, media } = invitation
   return (
-    <div className="relative flex min-h-[100dvh] select-none flex-col items-center justify-between overflow-hidden px-5 py-10 text-center text-ivory">
+    <div className="relative flex min-h-[100dvh] select-none flex-col items-center justify-between overflow-hidden text-center text-ivory">
       <PhotoBackground src={media.coverImageUrl} contain priority />
       <div className="absolute inset-0 bg-mahogany/55" />
       <div className="absolute inset-0 bg-gradient-to-t from-mahogany/95 via-transparent to-mahogany/65" />
 
-      <div className="relative z-10 mt-6 w-full animate-fade-up px-1 pt-6">
+      <div className="relative z-10 mt-16 w-full animate-fade-up px-6">
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-ivory/90 drop-shadow-md">The Wedding Of</p>
         <h1 className="font-serif text-5xl uppercase leading-none text-ivory drop-shadow-lg">{bride.shortName} &amp; {groom.shortName}</h1>
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center">
+      <div className="relative z-10 mt-4 flex flex-1 animate-fade-up flex-col items-center justify-center anim-delay-100">
         <p className="text-sm text-ivory/90 drop-shadow-md">Kepada Yth;</p>
         <p className="text-sm text-ivory/90 drop-shadow-md">Bapak/Ibu/Saudara/i</p>
         <p className="mt-3 text-2xl font-bold capitalize text-ivory drop-shadow-lg">{guestName}</p>
       </div>
 
-      <div className="relative z-10 flex w-full flex-col items-center gap-5">
+      <div className="relative z-10 flex w-full animate-fade-up flex-col items-center gap-5 px-4 pb-10 anim-delay-200">
         <div className="flex w-full items-center justify-center gap-3">
-          <div className="h-px w-12 bg-ivory/40" />
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-ivory/90">{formatWeddingDate(invitation)}</p>
-          <div className="h-px w-12 bg-ivory/40" />
+          <div className="h-px max-w-[48px] flex-1 bg-ivory/40" />
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-ivory/90">{formatWeddingDate(invitation)}</p>
+          <div className="h-px max-w-[48px] flex-1 bg-ivory/40" />
         </div>
         <Countdown />
         <button onClick={onOpen} className="mt-1 rounded-full bg-ivory px-12 py-4 text-sm font-bold tracking-widest text-mahogany shadow-[0_0_20px_rgba(239,239,240,.3)] transition active:scale-95">

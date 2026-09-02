@@ -275,7 +275,7 @@ BEGIN
       ('Delta Gray Renderer', 'Internal renderer', 'Technical renderer row.', 'Modern', 'delta-gray', 'delta-gray', false, false, NULL, ARRAY['/classicdark1.webp']),
       ('Pink Flower Renderer', 'Internal renderer', 'Technical renderer row.', 'Floral', 'pink-flower', 'pink-flower', false, false, NULL, ARRAY['/flower1.webp']),
       ('Javanese Renderer', 'Internal renderer', 'Technical renderer row.', 'Classic', 'javanese', 'javanese', false, false, NULL, ARRAY['/jawa1.webp']),
-      ('Mahogany', 'Undangan elegan bernuansa mahogany', 'Undangan digital bernuansa mahogany dan ivory dengan tampilan editorial.', 'Classic', 'mahogany', 'mahogany', false, true, NULL, ARRAY['/templates/mahogany/walk.jpg', '/templates/mahogany/couple.jpg', '/templates/mahogany/rings.jpg'])
+      ('Mahogany', 'Undangan elegan bernuansa mahogany', 'Undangan digital bernuansa mahogany dan ivory dengan tampilan editorial.', 'Classic', 'mahogany', 'mahogany', false, true, NULL, ARRAY['/templates/mahogany/cover.png', '/templates/mahogany/page1.png', '/templates/mahogany/page2.png', '/templates/mahogany/page3.png', '/templates/mahogany/page4.png', '/templates/mahogany/page5.png', '/templates/mahogany/page6.png', '/templates/mahogany/page7.png', '/templates/mahogany/page8.png'])
     ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle, style = EXCLUDED.style, is_featured = EXCLUDED.is_featured, catalog_visible = EXCLUDED.catalog_visible, demo_url = EXCLUDED.demo_url, images = EXCLUDED.images;
   ELSE
     INSERT INTO templates (name, subtitle, description, style, slug, renderer_key, is_featured, catalog_visible, demo_url, images)
@@ -286,7 +286,7 @@ BEGIN
       ('Delta Gray Renderer', 'Internal renderer', 'Technical renderer row.', 'Modern', 'delta-gray', 'delta-gray', false, false, NULL, '["/classicdark1.webp"]'::jsonb),
       ('Pink Flower Renderer', 'Internal renderer', 'Technical renderer row.', 'Floral', 'pink-flower', 'pink-flower', false, false, NULL, '["/flower1.webp"]'::jsonb),
       ('Javanese Renderer', 'Internal renderer', 'Technical renderer row.', 'Classic', 'javanese', 'javanese', false, false, NULL, '["/jawa1.webp"]'::jsonb),
-      ('Mahogany', 'Undangan elegan bernuansa mahogany', 'Undangan digital bernuansa mahogany dan ivory dengan tampilan editorial.', 'Classic', 'mahogany', 'mahogany', false, true, NULL, '["/templates/mahogany/walk.jpg", "/templates/mahogany/couple.jpg", "/templates/mahogany/rings.jpg"]'::jsonb)
+      ('Mahogany', 'Undangan elegan bernuansa mahogany', 'Undangan digital bernuansa mahogany dan ivory dengan tampilan editorial.', 'Classic', 'mahogany', 'mahogany', false, true, NULL, '["/templates/mahogany/cover.png", "/templates/mahogany/page1.png", "/templates/mahogany/page2.png", "/templates/mahogany/page3.png", "/templates/mahogany/page4.png", "/templates/mahogany/page5.png", "/templates/mahogany/page6.png", "/templates/mahogany/page7.png", "/templates/mahogany/page8.png"]'::jsonb)
     ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle, style = EXCLUDED.style, is_featured = EXCLUDED.is_featured, catalog_visible = EXCLUDED.catalog_visible, demo_url = EXCLUDED.demo_url, images = EXCLUDED.images;
   END IF;
 END $$;

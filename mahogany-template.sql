@@ -204,9 +204,15 @@ BEGIN
       false,
       true,
       ARRAY[
-        '/templates/mahogany/walk.jpg',
-        '/templates/mahogany/couple.jpg',
-        '/templates/mahogany/rings.jpg'
+        '/templates/mahogany/cover.png',
+        '/templates/mahogany/page1.png',
+        '/templates/mahogany/page2.png',
+        '/templates/mahogany/page3.png',
+        '/templates/mahogany/page4.png',
+        '/templates/mahogany/page5.png',
+        '/templates/mahogany/page6.png',
+        '/templates/mahogany/page7.png',
+        '/templates/mahogany/page8.png'
       ]
     )
     ON CONFLICT (slug) DO UPDATE SET
@@ -231,7 +237,7 @@ BEGIN
       'mahogany',
       false,
       true,
-      '["/templates/mahogany/walk.jpg", "/templates/mahogany/couple.jpg", "/templates/mahogany/rings.jpg"]'::jsonb
+      '["/templates/mahogany/cover.png", "/templates/mahogany/page1.png", "/templates/mahogany/page2.png", "/templates/mahogany/page3.png", "/templates/mahogany/page4.png", "/templates/mahogany/page5.png", "/templates/mahogany/page6.png", "/templates/mahogany/page7.png", "/templates/mahogany/page8.png"]'::jsonb
     )
     ON CONFLICT (slug) DO UPDATE SET
       name = EXCLUDED.name,

@@ -127,7 +127,7 @@ export default function TemplateDetails() {
                   </span>
                 )}
               </div>
-              <div className="mt-4 flex gap-3">
+              <div className="mt-4 flex max-w-full gap-3 overflow-x-auto pb-1 no-scrollbar">
                 {images.map((img, i) => (
                   <button
                     key={i}
