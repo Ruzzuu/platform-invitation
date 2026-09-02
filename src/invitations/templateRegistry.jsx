@@ -9,9 +9,12 @@ export const TEMPLATE_REGISTRY = {
 
 export const TEMPLATE_ALIASES = {
   'invitation-delta-gray': 'delta-gray',
+  'classic-dark': 'delta-gray',
   'invitation-pink-flower': 'pink-flower',
+  'romantic-floral': 'pink-flower',
   'undangan-jawa': 'javanese',
   undanganjawa: 'javanese',
+  'javanese-gold': 'javanese',
   mahogony: 'mahogany',
   'invitation-mahogony': 'mahogany',
   'invitation-mahogany': 'mahogany',

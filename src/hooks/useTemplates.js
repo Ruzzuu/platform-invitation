@@ -32,6 +32,7 @@ export function useTemplates({ style = 'All', sort = 'featured', page = 1, featu
       let query = supabase
         .from('templates')
         .select('*', { count: 'exact' })
+        .not('renderer_key', 'is', null)
 
       if (featuredOnly) query = query.eq('is_featured', true)
       if (style && style !== 'All') query = query.eq('style', style)

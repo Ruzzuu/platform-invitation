@@ -1,5 +1,6 @@
--- Lembaran Baru: register the Mahogany renderer and optional digital gift.
--- Safe to run more than once. This migration does not delete customer data.
+-- Lembaran Baru: correct duplicate catalog entries, register Mahogany,
+-- add optional digital gift, and restrict public invitation reads.
+-- Safe to run more than once. Customer invitations are never deleted here.
 
 ALTER TABLE public.invitations
   ADD COLUMN IF NOT EXISTS gift JSONB DEFAULT '{"enabled":false}'::jsonb;
@@ -119,6 +120,37 @@ FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.create_customer_invitation(TEXT, TEXT, TIMESTAMPTZ, JSONB)
 TO service_role;
 
+-- Remove permissive public read policies left by older schemas. Policies for
+-- private database roles are preserved. Supabase Table Editor uses postgres
+-- and is not affected by this public API policy.
+ALTER TABLE public.invitations ENABLE ROW LEVEL SECURITY;
+DO $$
+DECLARE
+  policy_row RECORD;
+BEGIN
+  FOR policy_row IN
+    SELECT policyname
+    FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'invitations'
+      AND cmd = 'SELECT'
+      AND roles && ARRAY['public', 'anon', 'authenticated']::name[]
+  LOOP
+    EXECUTE format('DROP POLICY %I ON public.invitations', policy_row.policyname);
+  END LOOP;
+END $$;
+
+DROP POLICY IF EXISTS "Published invitations are publicly viewable" ON public.invitations;
+CREATE POLICY "Published invitations are publicly viewable"
+ON public.invitations
+FOR SELECT
+TO anon, authenticated
+USING (
+  status = 'published'
+  AND is_active = true
+  AND (expires_at IS NULL OR expires_at > NOW())
+);
+
 DO $$
 DECLARE
   images_type TEXT;
@@ -130,6 +162,33 @@ BEGIN
     AND column_name = 'images';
 
   IF images_type = '_text' THEN
+    UPDATE public.templates SET
+      name = 'Classic Dark',
+      subtitle = 'Undangan digital elegan dengan tema gelap minimalis',
+      description = 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.',
+      style = 'Modern',
+      is_featured = true,
+      images = ARRAY['/classicdark1.webp', '/classicdark2.webp', '/classicdark3.webp', '/classicdark4.webp', '/classicdark5.webp', '/classicdark6.webp', '/classicdark7.webp', '/classicdark8.webp', '/classicdark9.webp']
+    WHERE slug = 'delta-gray';
+
+    UPDATE public.templates SET
+      name = 'Romantic Floral',
+      subtitle = 'Undangan digital romantis dengan dekorasi bunga',
+      description = 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.',
+      style = 'Floral',
+      is_featured = true,
+      images = ARRAY['/flower1.webp', '/flower2.webp', '/flower3.webp', '/flower4.webp', '/flower5.webp', '/flower6.webp', '/flower7.webp', '/flower8.webp', '/flower9.webp']
+    WHERE slug = 'pink-flower';
+
+    UPDATE public.templates SET
+      name = 'Javanese Gold',
+      subtitle = 'Undangan digital tradisional Jawa dengan aksen emas',
+      description = 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.',
+      style = 'Classic',
+      is_featured = true,
+      images = ARRAY['/jawa1.webp', '/jawa2.webp', '/jawa3.webp', '/jawa4.webp', '/jawa5.webp', '/jawa6.webp', '/jawa7.webp', '/jawa8.webp', '/jawa9.webp', '/jawa10.webp']
+    WHERE slug = 'javanese';
+
     INSERT INTO public.templates (
       name, subtitle, description, style, slug, renderer_key,
       is_featured, images
@@ -142,8 +201,8 @@ BEGIN
       'mahogany',
       false,
       ARRAY[
-        '/templates/mahogany/couple.jpg',
         '/templates/mahogany/walk.jpg',
+        '/templates/mahogany/couple.jpg',
         '/templates/mahogany/rings.jpg'
       ]
     )
@@ -156,6 +215,33 @@ BEGIN
       is_featured = EXCLUDED.is_featured,
       images = EXCLUDED.images;
   ELSIF images_type = 'jsonb' THEN
+    UPDATE public.templates SET
+      name = 'Classic Dark',
+      subtitle = 'Undangan digital elegan dengan tema gelap minimalis',
+      description = 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.',
+      style = 'Modern',
+      is_featured = true,
+      images = '["/classicdark1.webp", "/classicdark2.webp", "/classicdark3.webp", "/classicdark4.webp", "/classicdark5.webp", "/classicdark6.webp", "/classicdark7.webp", "/classicdark8.webp", "/classicdark9.webp"]'::jsonb
+    WHERE slug = 'delta-gray';
+
+    UPDATE public.templates SET
+      name = 'Romantic Floral',
+      subtitle = 'Undangan digital romantis dengan dekorasi bunga',
+      description = 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.',
+      style = 'Floral',
+      is_featured = true,
+      images = '["/flower1.webp", "/flower2.webp", "/flower3.webp", "/flower4.webp", "/flower5.webp", "/flower6.webp", "/flower7.webp", "/flower8.webp", "/flower9.webp"]'::jsonb
+    WHERE slug = 'pink-flower';
+
+    UPDATE public.templates SET
+      name = 'Javanese Gold',
+      subtitle = 'Undangan digital tradisional Jawa dengan aksen emas',
+      description = 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.',
+      style = 'Classic',
+      is_featured = true,
+      images = '["/jawa1.webp", "/jawa2.webp", "/jawa3.webp", "/jawa4.webp", "/jawa5.webp", "/jawa6.webp", "/jawa7.webp", "/jawa8.webp", "/jawa9.webp", "/jawa10.webp"]'::jsonb
+    WHERE slug = 'javanese';
+
     INSERT INTO public.templates (
       name, subtitle, description, style, slug, renderer_key,
       is_featured, images
@@ -167,7 +253,7 @@ BEGIN
       'mahogany',
       'mahogany',
       false,
-      '["/templates/mahogany/couple.jpg", "/templates/mahogany/walk.jpg", "/templates/mahogany/rings.jpg"]'::jsonb
+      '["/templates/mahogany/walk.jpg", "/templates/mahogany/couple.jpg", "/templates/mahogany/rings.jpg"]'::jsonb
     )
     ON CONFLICT (slug) DO UPDATE SET
       name = EXCLUDED.name,
@@ -182,6 +268,30 @@ BEGIN
   END IF;
 END $$;
 
-SELECT slug, renderer_key, name, is_featured
+-- Delete only duplicate product rows that are not referenced by any invitation.
+-- Referenced legacy rows stay in the database, but the storefront hides them
+-- because they do not have renderer_key.
+DELETE FROM public.templates AS legacy
+WHERE legacy.slug IN ('classic-dark', 'romantic-floral', 'javanese-gold')
+  AND NOT EXISTS (
+    SELECT 1 FROM public.invitations
+    WHERE invitations.template_id = legacy.id
+       OR invitations.template_slug = legacy.slug
+  );
+
+SELECT slug, renderer_key, name, is_featured, images
 FROM public.templates
-WHERE slug = 'mahogany';
+WHERE renderer_key IS NOT NULL
+ORDER BY created_at, slug;
+
+SELECT slug AS retained_legacy_slug
+FROM public.templates
+WHERE slug IN ('classic-dark', 'romantic-floral', 'javanese-gold')
+ORDER BY slug;
+
+SELECT policyname, roles, cmd, qual AS using_expression
+FROM pg_policies
+WHERE schemaname = 'public'
+  AND tablename = 'invitations'
+  AND cmd = 'SELECT'
+ORDER BY policyname;

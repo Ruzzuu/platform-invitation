@@ -32,7 +32,9 @@ export function createSampleInvitation(rendererKey = 'pink-flower') {
     locationLabel: 'Jakarta, Indonesia',
     quoteText: DEFAULT_QUOTE,
     quoteSource: 'Q.S. Ar-Rum : 21',
-    introText: 'Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir dalam pernikahan kami.',
+    introText: isMahogany
+      ? 'By the grace of God, we are pleased to announce our wedding to you, our family and friends.'
+      : 'Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir dalam pernikahan kami.',
     events: [
       { name: 'Akad Nikah', dateLabel: 'Sabtu, 24 Oktober 2026', timeLabel: 'Pukul 08:00 WIB', venue: 'Masjid Istiqlal', address: 'Jakarta Pusat', mapUrl: 'https://maps.google.com/' },
       { name: 'Resepsi', dateLabel: 'Sabtu, 24 Oktober 2026', timeLabel: 'Pukul 11:00 WIB', venue: 'Graha Cempaka', address: 'Jakarta', mapUrl: 'https://maps.google.com/' },
@@ -44,10 +46,10 @@ export function createSampleInvitation(rendererKey = 'pink-flower') {
       { title: 'Menikah', year: '2026', text: 'Kami mengikat janji suci dan memulai perjalanan baru.' },
     ],
     media: {
-      coverImageUrl: isMahogany ? `${base}/couple.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose1.webp`,
-      secondaryImageUrl: isMahogany ? `${base}/walk.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose2.webp`,
+      coverImageUrl: isMahogany ? `${base}/walk.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose1.webp`,
+      secondaryImageUrl: isMahogany ? `${base}/couple.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose2.webp`,
       eventImageUrl: isMahogany ? `${base}/walk.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
-      rsvpBackgroundUrl: isMahogany ? `${base}/couple.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
+      rsvpBackgroundUrl: isMahogany ? `${base}/walk.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
       musicUrl: isDark ? `${base}/Nadhif Basalamah kota ini tak sama tanpamu.mp3` : isJavanese ? `${base}/Epic Orchestra Java Cinematic Javanese Orchestra Background Music.mp3` : '',
       musicCredit: isJavanese ? 'Javanese Cinematic Orchestra' : 'Lagu pilihan mempelai',
       galleryUrls: isMahogany
@@ -62,7 +64,9 @@ export function createSampleInvitation(rendererKey = 'pink-flower') {
     brideFamilyDetail: 'Bapak Ahmad & Ibu Aminah',
     groomFamilyTitle: 'Keluarga mempelai pria',
     groomFamilyDetail: 'Bapak Hasan & Ibu Fatimah',
-    gift: { enabled: false, bankName: '', accountNumber: '', accountHolder: '' },
+    gift: isMahogany
+      ? { enabled: true, bankName: 'Bank Demo', accountNumber: '0000 0000 0000', accountHolder: 'NADIRA ANGELINA' }
+      : { enabled: false, bankName: '', accountNumber: '', accountHolder: '' },
   }
 }
 

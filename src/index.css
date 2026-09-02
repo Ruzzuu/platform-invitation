@@ -48,8 +48,14 @@
   --color-ivory: 239 239 240;
 }
 .mahogany-responsive-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
   height: 100%;
   width: 100%;
-  object-fit: cover;
-  object-position: center;
+  object-fit: contain;
+  object-position: center top;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 42%, rgba(0, 0, 0, .96) 52%, rgba(0, 0, 0, .78) 66%, rgba(0, 0, 0, .48) 80%, rgba(0, 0, 0, .18) 92%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 42%, rgba(0, 0, 0, .96) 52%, rgba(0, 0, 0, .78) 66%, rgba(0, 0, 0, .48) 80%, rgba(0, 0, 0, .18) 92%, transparent 100%);
 }

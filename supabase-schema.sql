@@ -266,19 +266,19 @@ BEGIN
   IF images_type = '_text' THEN
     INSERT INTO templates (name, subtitle, description, style, slug, renderer_key, is_featured, images)
     VALUES
-      ('Delta Gray', 'Modern monochrome invitation', 'A bold gray and black invitation design.', 'Modern', 'delta-gray', 'delta-gray', true, ARRAY['/gambar1.webp']),
-      ('Pink Flower', 'Romantic floral invitation', 'A soft floral invitation with an animated opening.', 'Floral', 'pink-flower', 'pink-flower', true, ARRAY['/flower1.webp']),
-      ('Undangan Jawa', 'Traditional Javanese invitation', 'A dark gold Javanese design with wayang animation.', 'Classic', 'javanese', 'javanese', true, ARRAY['/jawa1.webp']),
-      ('Mahogany', 'Elegant mahogany invitation', 'An elegant ivory and mahogany invitation with editorial photography.', 'Classic', 'mahogany', 'mahogany', false, ARRAY['/templates/mahogany/couple.jpg', '/templates/mahogany/walk.jpg', '/templates/mahogany/rings.jpg'])
-    ON CONFLICT (slug) DO UPDATE SET renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle;
+      ('Classic Dark', 'Undangan digital elegan dengan tema gelap minimalis', 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.', 'Modern', 'delta-gray', 'delta-gray', true, ARRAY['/classicdark1.webp', '/classicdark2.webp', '/classicdark3.webp', '/classicdark4.webp', '/classicdark5.webp', '/classicdark6.webp', '/classicdark7.webp', '/classicdark8.webp', '/classicdark9.webp']),
+      ('Romantic Floral', 'Undangan digital romantis dengan dekorasi bunga', 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.', 'Floral', 'pink-flower', 'pink-flower', true, ARRAY['/flower1.webp', '/flower2.webp', '/flower3.webp', '/flower4.webp', '/flower5.webp', '/flower6.webp', '/flower7.webp', '/flower8.webp', '/flower9.webp']),
+      ('Javanese Gold', 'Undangan digital tradisional Jawa dengan aksen emas', 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.', 'Classic', 'javanese', 'javanese', true, ARRAY['/jawa1.webp', '/jawa2.webp', '/jawa3.webp', '/jawa4.webp', '/jawa5.webp', '/jawa6.webp', '/jawa7.webp', '/jawa8.webp', '/jawa9.webp', '/jawa10.webp']),
+      ('Mahogany', 'Elegant mahogany invitation', 'An elegant ivory and mahogany invitation with editorial photography.', 'Classic', 'mahogany', 'mahogany', false, ARRAY['/templates/mahogany/walk.jpg', '/templates/mahogany/couple.jpg', '/templates/mahogany/rings.jpg'])
+    ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle, style = EXCLUDED.style, images = EXCLUDED.images;
   ELSE
     INSERT INTO templates (name, subtitle, description, style, slug, renderer_key, is_featured, images)
     VALUES
-      ('Delta Gray', 'Modern monochrome invitation', 'A bold gray and black invitation design.', 'Modern', 'delta-gray', 'delta-gray', true, '["/gambar1.webp"]'::jsonb),
-      ('Pink Flower', 'Romantic floral invitation', 'A soft floral invitation with an animated opening.', 'Floral', 'pink-flower', 'pink-flower', true, '["/flower1.webp"]'::jsonb),
-      ('Undangan Jawa', 'Traditional Javanese invitation', 'A dark gold Javanese design with wayang animation.', 'Classic', 'javanese', 'javanese', true, '["/jawa1.webp"]'::jsonb),
-      ('Mahogany', 'Elegant mahogany invitation', 'An elegant ivory and mahogany invitation with editorial photography.', 'Classic', 'mahogany', 'mahogany', false, '["/templates/mahogany/couple.jpg", "/templates/mahogany/walk.jpg", "/templates/mahogany/rings.jpg"]'::jsonb)
-    ON CONFLICT (slug) DO UPDATE SET renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle;
+      ('Classic Dark', 'Undangan digital elegan dengan tema gelap minimalis', 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.', 'Modern', 'delta-gray', 'delta-gray', true, '["/classicdark1.webp", "/classicdark2.webp", "/classicdark3.webp", "/classicdark4.webp", "/classicdark5.webp", "/classicdark6.webp", "/classicdark7.webp", "/classicdark8.webp", "/classicdark9.webp"]'::jsonb),
+      ('Romantic Floral', 'Undangan digital romantis dengan dekorasi bunga', 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.', 'Floral', 'pink-flower', 'pink-flower', true, '["/flower1.webp", "/flower2.webp", "/flower3.webp", "/flower4.webp", "/flower5.webp", "/flower6.webp", "/flower7.webp", "/flower8.webp", "/flower9.webp"]'::jsonb),
+      ('Javanese Gold', 'Undangan digital tradisional Jawa dengan aksen emas', 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.', 'Classic', 'javanese', 'javanese', true, '["/jawa1.webp", "/jawa2.webp", "/jawa3.webp", "/jawa4.webp", "/jawa5.webp", "/jawa6.webp", "/jawa7.webp", "/jawa8.webp", "/jawa9.webp", "/jawa10.webp"]'::jsonb),
+      ('Mahogany', 'Elegant mahogany invitation', 'An elegant ivory and mahogany invitation with editorial photography.', 'Classic', 'mahogany', 'mahogany', false, '["/templates/mahogany/walk.jpg", "/templates/mahogany/couple.jpg", "/templates/mahogany/rings.jpg"]'::jsonb)
+    ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle, style = EXCLUDED.style, images = EXCLUDED.images;
   END IF;
 END $$;
 

@@ -62,17 +62,18 @@ export function MahoganyCover({ onOpen }) {
   const { bride, groom, media } = invitation
   return (
     <div className="relative flex min-h-[100dvh] select-none flex-col items-center justify-between overflow-hidden px-5 py-10 text-center text-ivory">
-      <PhotoBackground src={media.coverImageUrl} priority />
+      <PhotoBackground src={media.coverImageUrl} contain priority />
       <div className="absolute inset-0 bg-mahogany/55" />
       <div className="absolute inset-0 bg-gradient-to-t from-mahogany/95 via-transparent to-mahogany/65" />
 
-      <div className="relative z-10 mt-6 w-full animate-fade-up">
+      <div className="relative z-10 mt-6 w-full animate-fade-up px-1 pt-6">
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-ivory/90 drop-shadow-md">The Wedding Of</p>
         <h1 className="font-serif text-5xl uppercase leading-none text-ivory drop-shadow-lg">{bride.shortName} &amp; {groom.shortName}</h1>
       </div>
 
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center">
-        <p className="text-sm text-ivory/85">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+        <p className="text-sm text-ivory/90 drop-shadow-md">Kepada Yth;</p>
+        <p className="text-sm text-ivory/90 drop-shadow-md">Bapak/Ibu/Saudara/i</p>
         <p className="mt-3 text-2xl font-bold capitalize text-ivory drop-shadow-lg">{guestName}</p>
       </div>
 
@@ -83,8 +84,8 @@ export function MahoganyCover({ onOpen }) {
           <div className="h-px w-12 bg-ivory/40" />
         </div>
         <Countdown />
-        <button onClick={onOpen} className="mt-1 rounded-full bg-ivory px-11 py-4 text-xs font-bold uppercase tracking-[0.18em] text-mahogany shadow-xl active:scale-95">
-          Buka Undangan
+        <button onClick={onOpen} className="mt-1 rounded-full bg-ivory px-12 py-4 text-sm font-bold tracking-widest text-mahogany shadow-[0_0_20px_rgba(239,239,240,.3)] transition active:scale-95">
+          Open Invitation
         </button>
       </div>
     </div>
@@ -100,17 +101,18 @@ export function MahoganyHome() {
   }
   return (
     <div className="min-h-full bg-mahogany pb-14 text-ivory">
-      <div className="relative h-[52vh] overflow-hidden">
+      <div className="relative min-h-[220px] overflow-hidden px-6 pb-6 pt-8">
         <PhotoBackground src={media.coverImageUrl} />
         <div className="absolute inset-0 bg-mahogany/45" />
         <div className="absolute inset-0 bg-gradient-to-t from-mahogany via-transparent to-mahogany/45" />
-        <div className="absolute inset-x-0 bottom-14 z-10 text-center">
+        <div className="relative z-10 flex flex-col items-center text-center">
           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-ivory/85">The Wedding Of</p>
-          <h1 className="mt-2 font-serif text-5xl italic text-ivory drop-shadow-lg">{bride.shortName} &amp; {groom.shortName}</h1>
+          <h1 className="mt-2 font-serif text-5xl italic text-ivory drop-shadow-lg">{bride.shortName} &amp;</h1>
+          <h1 className="ml-12 mt-1 font-serif text-5xl italic text-ivory drop-shadow-lg">{groom.shortName}</h1>
         </div>
       </div>
 
-      <FadeIn className="relative z-10 mx-4 -mt-8 overflow-hidden rounded-3xl bg-ivory text-mahogany shadow-2xl">
+      <FadeIn className="relative z-10 mx-4 overflow-hidden rounded-3xl bg-ivory text-mahogany shadow-2xl">
         <div className="p-8 text-center">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-mahogany/60">The Invitation</p>
           <p className="text-xs leading-relaxed text-mahogany/80">“{invitation.quoteText}”</p>
@@ -119,7 +121,7 @@ export function MahoganyHome() {
         <img src={media.secondaryImageUrl} alt={`${bride.shortName} dan ${groom.shortName}`} className="aspect-[4/3] w-full object-cover" loading="lazy" />
       </FadeIn>
 
-      <FadeIn className="mt-7 px-6 text-center">
+      <FadeIn className="mt-5 px-6 text-center">
         <p className="text-sm font-medium tracking-wide">{formatWeddingDate(invitation)}</p>
         <p className="mt-1 text-xs text-ivory/70">{invitation.locationLabel}</p>
         <div className="mt-6 flex flex-col gap-3">
@@ -159,29 +161,37 @@ export function MahoganyCouple() {
 
 export function MahoganyEvents() {
   const { invitation } = useInvitationContext()
+  const locationEvent = invitation.events.find((event) => event.mapUrl) || invitation.events[0]
   return (
-    <div className="min-h-full bg-mahogany">
-      <div className="relative overflow-hidden px-6 py-14 text-center text-ivory">
-        <PhotoBackground src={invitation.media.eventImageUrl} />
-        <div className="absolute inset-0 bg-mahogany/70" />
+    <div className="min-h-full bg-mahogany pb-10">
+      <div className="relative overflow-hidden px-6 pb-14 pt-10 text-center text-ivory">
+        <PhotoBackground src={invitation.media.eventImageUrl} contain />
+        <div className="absolute inset-0 bg-mahogany/55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-mahogany via-transparent to-mahogany/40" />
         <FadeIn className="relative z-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ivory/70">The Day</p>
-          <h2 className="mb-9 mt-2 font-serif text-4xl tracking-widest">Wedding Event</h2>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-ivory/70">The Day</p>
+          <h2 className="mb-7 font-serif text-4xl tracking-widest">WEDDING<span className="-mt-3 block font-script text-5xl normal-case tracking-normal opacity-90">Event</span></h2>
           {invitation.events.map((event, index) => (
-            <div key={`${event.name}-${index}`} className="mb-10">
-              <h3 className="font-serif text-2xl uppercase tracking-widest">{event.name}</h3>
-              <p className="mt-3 text-sm">{event.dateLabel}</p>
-              <p className="text-sm">{event.timeLabel}</p>
-              <p className="mt-2 text-xs leading-relaxed text-ivory/75">{event.venue}{event.address ? `, ${event.address}` : ''}</p>
-              {event.mapUrl && <a href={event.mapUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 rounded-full bg-ivory px-6 py-3 text-xs font-semibold text-mahogany"><span className="material-symbols-outlined text-base">map</span>Buka Google Maps</a>}
-              {index === 0 && <div className="mt-8"><Countdown /></div>}
+            <div key={`${event.name}-${index}`} className="mb-7">
+              <h3 className="mb-3 font-serif text-2xl uppercase tracking-widest">{event.name}</h3>
+              <p className="text-sm font-medium">{event.dateLabel}</p>
+              <p className="text-sm font-medium">{event.timeLabel}</p>
+              {index === 0 && <div className="my-8"><Countdown /></div>}
             </div>
           ))}
+          {locationEvent && (
+            <div className="mx-auto mt-3 max-w-sm rounded-2xl border border-ivory/20 bg-mahogany/70 p-6 shadow-lg backdrop-blur-sm">
+              <span className="material-symbols-outlined mb-3 text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>location_on</span>
+              <p className="mb-2 font-serif text-xl">{locationEvent.venue || 'Lokasi Acara'}</p>
+              <p className="mb-5 text-xs leading-relaxed text-ivory/70">{locationEvent.address || invitation.locationLabel}</p>
+              {locationEvent.mapUrl && <a href={locationEvent.mapUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-ivory px-6 py-3 text-xs font-semibold text-mahogany shadow-md"><span className="material-symbols-outlined text-base">map</span>Buka Google Maps</a>}
+            </div>
+          )}
         </FadeIn>
       </div>
 
       {invitation.loveStory.length > 0 && (
-        <div className="rounded-t-3xl bg-ivory px-6 py-14 text-center text-mahogany shadow-[0_-10px_24px_rgba(0,0,0,.2)]">
+        <div className="relative z-20 -mt-6 rounded-t-3xl bg-ivory px-6 py-10 text-center text-mahogany shadow-[0_-10px_24px_rgba(0,0,0,.2)]">
           <FadeIn>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-mahogany/60">Our Journey</p>
             <h2 className="mb-10 mt-2 font-serif text-3xl tracking-widest">Love Story</h2>
@@ -277,10 +287,11 @@ export function MahoganyGallery() {
 
   return (
     <div className="min-h-full bg-ivory pb-20 text-mahogany">
-      <div className="px-4 py-14">
+      <div className="px-4 pb-14 pt-8">
         <FadeIn className="mb-8 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-mahogany/60">Memories</p>
           <h2 className="mt-2 font-serif text-4xl">Our Gallery</h2>
+          <div className="mx-auto mt-4 h-px w-12 bg-mahogany/20" />
         </FadeIn>
         <div className="columns-2 gap-3 space-y-3">
           {invitation.media.galleryUrls.map((url, index) => (
@@ -291,45 +302,47 @@ export function MahoganyGallery() {
         </div>
       </div>
 
-      <div className="relative px-4 py-16 text-ivory">
-        <PhotoBackground src={invitation.media.rsvpBackgroundUrl} />
-        <div className="absolute inset-0 bg-mahogany/75" />
-        <div className="relative z-10 mx-auto max-w-md space-y-12">
+      <div className="relative -mt-6 overflow-hidden rounded-t-3xl px-4 py-12 text-ivory shadow-[0_-10px_20px_rgba(0,0,0,.2)]">
+        <PhotoBackground src={invitation.media.rsvpBackgroundUrl} contain />
+        <div className="absolute inset-0 bg-mahogany/65" />
+        <div className="absolute inset-0 bg-gradient-to-t from-mahogany via-transparent to-mahogany/40" />
+        <div className="relative z-10 mx-auto max-w-md space-y-16">
           <FadeIn>
-            <h3 className="mb-6 text-center font-serif text-3xl">Konfirmasi Kehadiran</h3>
-            <form onSubmit={sendRsvp} className="space-y-4 rounded-2xl border border-ivory/20 bg-mahogany/85 p-6 backdrop-blur-md">
+            <div className="mb-8 text-center"><p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-ivory/60">RSVP</p><h3 className="font-serif text-3xl">Konfirmasi Kehadiran</h3><div className="mx-auto mt-4 h-px w-12 bg-ivory/20" /></div>
+            <form onSubmit={sendRsvp} className="space-y-5 rounded-2xl border border-ivory/20 bg-mahogany/90 p-6 backdrop-blur-md">
               <input type="text" name="company_website" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-px w-px opacity-0" aria-hidden="true" />
-              <input value={rsvpName} onChange={(event) => setRsvpName(event.target.value)} maxLength={100} required placeholder="Nama lengkap" className="w-full rounded-xl border border-ivory/20 bg-transparent px-4 py-3 text-sm text-ivory placeholder:text-ivory/40" />
-              <div className="flex gap-3">
-                {[true, false].map((value) => <button key={String(value)} type="button" onClick={() => setAttending(value)} className={`flex-1 rounded-xl border py-3 text-sm ${attending === value ? 'bg-ivory font-semibold text-mahogany' : 'border-ivory/20 text-ivory/70'}`}>{value ? 'Hadir' : 'Tidak Hadir'}</button>)}
-              </div>
-              {attending && <div className="flex items-center justify-between"><span className="text-sm">Jumlah tamu</span><input type="number" min="1" max="10" value={guestCount} onChange={(event) => setGuestCount(Math.min(10, Math.max(1, Number(event.target.value))))} className="w-20 rounded-lg border border-ivory/20 bg-transparent px-3 py-2 text-ivory" /></div>}
-              <button disabled={sending || !invitation.id} className="w-full rounded-xl bg-ivory py-3 text-sm font-semibold text-mahogany disabled:opacity-50">{invitation.id ? 'Kirim Konfirmasi' : 'Dinonaktifkan pada preview'}</button>
+              <div><label className="mb-2 block text-xs uppercase tracking-wider text-ivory/60">Nama Lengkap</label><input value={rsvpName} onChange={(event) => setRsvpName(event.target.value)} maxLength={100} required placeholder="Masukkan nama Anda" className="w-full rounded-xl border border-ivory/20 bg-mahogany px-4 py-3 text-sm text-ivory placeholder:text-ivory/40" /></div>
+              <div><label className="mb-2 block text-xs uppercase tracking-wider text-ivory/60">Kehadiran</label><div className="flex gap-3">{[true, false].map((value) => <button key={String(value)} type="button" onClick={() => setAttending(value)} className={`flex-1 rounded-xl border py-3 text-sm ${attending === value ? 'border-ivory bg-ivory font-medium text-mahogany' : 'border-ivory/20 text-ivory/60'}`}>{value ? 'Hadir' : 'Tidak Hadir'}</button>)}</div></div>
+              {attending && <div><label className="mb-2 block text-xs uppercase tracking-wider text-ivory/60">Jumlah Tamu</label><div className="flex w-fit items-center gap-4 rounded-xl border border-ivory/20 bg-mahogany p-2"><button type="button" onClick={() => setGuestCount((count) => Math.max(1, count - 1))} className="flex h-8 w-8 items-center justify-center rounded-lg bg-ivory/10">−</button><span className="w-6 text-center">{guestCount}</span><button type="button" onClick={() => setGuestCount((count) => Math.min(10, count + 1))} className="flex h-8 w-8 items-center justify-center rounded-lg bg-ivory/10">+</button></div></div>}
+              <button disabled={sending || !invitation.id} className="w-full rounded-xl bg-ivory py-4 text-sm font-medium text-mahogany disabled:opacity-50">{invitation.id ? (sending ? 'Mengirim...' : 'Kirim Konfirmasi') : 'Dinonaktifkan pada preview'}</button>
             </form>
           </FadeIn>
 
           {invitation.gift.enabled && (
             <FadeIn>
-              <h3 className="mb-6 text-center font-serif text-3xl">Hadiah Digital</h3>
-              <div className="rounded-2xl border border-ivory/20 bg-mahogany/85 p-6 shadow-xl backdrop-blur-md">
+              <div className="mb-7 text-center"><p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-ivory/60">Wedding Gift</p><h3 className="font-serif text-3xl">Hadiah Digital</h3><div className="mx-auto mt-4 h-px w-12 bg-ivory/20" /></div>
+              <p className="mx-auto mb-6 max-w-sm text-center text-sm leading-relaxed text-ivory/70">Tanpa mengurangi rasa hormat, bagi kerabat yang ingin memberikan hadiah atau tanda kasih secara digital, dapat dikirimkan melalui rekening berikut:</p>
+              <div className="relative overflow-hidden rounded-2xl border border-ivory/20 bg-mahogany/90 p-6 shadow-xl backdrop-blur-md">
+                <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full border border-ivory/10" />
+                <div className="absolute -bottom-14 -left-8 h-36 w-36 rounded-full border border-ivory/10" />
                 <div className="mb-7 flex items-center justify-between">
-                  <div><p className="text-[10px] uppercase tracking-[0.2em] text-ivory/50">Bank</p><p className="font-serif text-xl font-semibold">{invitation.gift.bankName}</p></div>
-                  <span className="material-symbols-outlined text-3xl text-ivory/40">account_balance</span>
+                  <div className="flex items-center gap-3"><span className="material-symbols-outlined flex h-10 w-10 items-center justify-center rounded-full bg-ivory/10">account_balance</span><div><p className="text-[10px] uppercase tracking-[0.2em] text-ivory/50">Bank</p><p className="font-serif text-xl font-semibold">{invitation.gift.bankName}</p></div></div>
+                  <span className="material-symbols-outlined text-3xl text-ivory/30">credit_card</span>
                 </div>
                 <p className="text-[10px] uppercase tracking-[0.2em] text-ivory/50">Nomor rekening</p>
                 <p className="mb-5 mt-1 break-all font-serif text-2xl tracking-[0.08em]">{invitation.gift.accountNumber}</p>
                 <div className="flex items-end justify-between gap-4 border-t border-ivory/15 pt-5">
                   <div><p className="text-[10px] uppercase tracking-[0.2em] text-ivory/50">Atas nama</p><p className="mt-1 text-sm font-semibold">{invitation.gift.accountHolder}</p></div>
-                  <button type="button" onClick={copyAccount} className="rounded-xl bg-ivory px-4 py-2.5 text-xs font-semibold text-mahogany">{accountCopied ? 'Tersalin' : 'Salin'}</button>
+                  <button type="button" onClick={copyAccount} className="inline-flex items-center gap-2 rounded-xl bg-ivory px-4 py-2.5 text-xs font-semibold text-mahogany"><span className="material-symbols-outlined text-base">{accountCopied ? 'check' : 'content_copy'}</span>{accountCopied ? 'Tersalin' : 'Salin Rekening'}</button>
                 </div>
               </div>
             </FadeIn>
           )}
 
           <FadeIn>
-            <h3 className="mb-6 text-center font-serif text-3xl">Wishes &amp; Prayers</h3>
+            <div className="mb-8 text-center"><p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-ivory/60">Guest Book</p><h3 className="font-serif text-3xl">Wishes &amp; Prayers</h3><div className="mx-auto mt-4 h-px w-12 bg-ivory/20" /></div>
             <div className="mb-4 max-h-80 space-y-3 overflow-y-auto">
-              {wishes.length === 0 ? <p className="rounded-2xl border border-ivory/15 bg-mahogany/80 p-6 text-center text-sm text-ivory/60">Belum ada ucapan.</p> : wishes.map((wish) => <article key={wish.id} className="rounded-2xl border border-ivory/15 bg-mahogany/85 p-5"><div className="flex justify-between gap-3"><strong className="text-sm">{wish.name}</strong><span className="text-[10px] text-ivory/45">{timeAgo(wish.created_at)}</span></div><p className="mt-3 text-sm text-ivory/75">{wish.message}</p></article>)}
+              {wishes.length === 0 ? <p className="rounded-2xl border border-ivory/15 bg-mahogany/80 p-6 text-center text-sm text-ivory/60">Belum ada ucapan.<span className="mt-1 block text-xs text-ivory/40">Jadilah yang pertama memberikan doa terbaik.</span></p> : wishes.map((wish) => <article key={wish.id} className="rounded-2xl border border-ivory/20 bg-mahogany/90 p-5"><div className="flex items-center gap-3"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ivory/15 text-sm font-medium">{wish.name?.charAt(0).toUpperCase()}</span><div><strong className="block text-sm">{wish.name}</strong><span className="text-[10px] text-ivory/45">{timeAgo(wish.created_at)}</span></div></div><p className="mt-3 text-sm leading-relaxed text-ivory/75">{wish.message}</p></article>)}
             </div>
             <form onSubmit={sendWish} className="space-y-3 rounded-2xl border border-ivory/20 bg-mahogany/85 p-5 backdrop-blur-md">
               <input type="text" name="company_website" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-px w-px opacity-0" aria-hidden="true" />
@@ -351,16 +364,20 @@ export function MahoganyClosing() {
   const { invitation } = useInvitationContext()
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-20 text-center text-ivory">
-      <PhotoBackground src={invitation.media.coverImageUrl} />
-      <div className="absolute inset-0 bg-mahogany/82" />
-      <div className="absolute inset-6 border border-ivory/40" />
+      <PhotoBackground src={invitation.media.coverImageUrl} contain />
+      <div className="absolute inset-0 bg-mahogany/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-mahogany via-transparent to-mahogany/95" />
+      <div className="absolute left-6 top-6 h-16 w-16 rounded-tl-3xl border-l-2 border-t-2 border-ivory opacity-70" />
+      <div className="absolute right-6 top-6 h-16 w-16 rounded-tr-3xl border-r-2 border-t-2 border-ivory opacity-70" />
+      <div className="absolute bottom-6 left-6 h-16 w-16 rounded-bl-3xl border-b-2 border-l-2 border-ivory opacity-70" />
+      <div className="absolute bottom-6 right-6 h-16 w-16 rounded-br-3xl border-b-2 border-r-2 border-ivory opacity-70" />
       <FadeIn className="relative z-10 mx-auto max-w-xl">
         <p className="font-serif text-lg leading-relaxed text-ivory/90">{invitation.closingText}</p>
         <p className="my-10 font-serif text-xl">{invitation.closingGreeting}</p>
         <h2 className="mb-8 font-serif text-3xl">Kami yang berbahagia</h2>
-        <div className="space-y-7">
-          <div><p className="font-serif text-lg">{invitation.brideFamilyTitle}</p><p className="mt-1 text-sm text-ivory/65">{invitation.brideFamilyDetail}</p></div>
-          <div><p className="font-serif text-lg">{invitation.groomFamilyTitle}</p><p className="mt-1 text-sm text-ivory/65">{invitation.groomFamilyDetail}</p></div>
+        <div className="space-y-8">
+          <div><p className="inline-block border-b border-ivory/40 pb-1 font-serif text-lg">{invitation.brideFamilyTitle}</p><p className="mt-1 font-serif text-base text-ivory/80">{invitation.brideFamilyDetail}</p></div>
+          <div><p className="inline-block border-b border-ivory/40 pb-1 font-serif text-lg">{invitation.groomFamilyTitle}</p><p className="mt-1 font-serif text-base text-ivory/80">{invitation.groomFamilyDetail}</p></div>
         </div>
         {invitation.media.musicCredit && <p className="mt-16 text-xs italic text-ivory/50">Music: {invitation.media.musicCredit}</p>}
       </FadeIn>
