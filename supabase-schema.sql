@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS templates (
   price INTEGER DEFAULT 80000 CHECK (price >= 0),
   price_display TEXT DEFAULT 'Rp 80.000',
   is_featured BOOLEAN DEFAULT false,
+  catalog_visible BOOLEAN NOT NULL DEFAULT true,
   slug TEXT UNIQUE NOT NULL,
   renderer_key TEXT UNIQUE,
   images JSONB DEFAULT '[]'::jsonb,
@@ -31,6 +32,7 @@ ALTER TABLE templates ADD COLUMN IF NOT EXISTS style TEXT;
 ALTER TABLE templates ADD COLUMN IF NOT EXISTS price INTEGER DEFAULT 80000;
 ALTER TABLE templates ADD COLUMN IF NOT EXISTS price_display TEXT DEFAULT 'Rp 80.000';
 ALTER TABLE templates ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT false;
+ALTER TABLE templates ADD COLUMN IF NOT EXISTS catalog_visible BOOLEAN DEFAULT true;
 ALTER TABLE templates ADD COLUMN IF NOT EXISTS slug TEXT;
 ALTER TABLE templates ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'::jsonb;
 ALTER TABLE templates ADD COLUMN IF NOT EXISTS badge TEXT;
@@ -48,6 +50,7 @@ UPDATE templates SET id = gen_random_uuid() WHERE id IS NULL;
 UPDATE templates SET price = 80000 WHERE price IS NULL;
 UPDATE templates SET price_display = 'Rp 80.000' WHERE price_display IS NULL;
 UPDATE templates SET is_featured = false WHERE is_featured IS NULL;
+UPDATE templates SET catalog_visible = true WHERE catalog_visible IS NULL;
 UPDATE templates SET rating = 5 WHERE rating IS NULL;
 UPDATE templates SET review_count = 0 WHERE review_count IS NULL;
 UPDATE templates SET created_at = NOW() WHERE created_at IS NULL;
@@ -252,7 +255,7 @@ ON CONFLICT (id) DO UPDATE SET public = true;
 DROP POLICY IF EXISTS "Public invitation assets are readable" ON storage.objects;
 CREATE POLICY "Public invitation assets are readable" ON storage.objects FOR SELECT USING (bucket_id = 'invitation-assets');
 
--- Register the three renderers. Existing matching rows are updated safely.
+-- Register visible products separately from their technical renderer rows.
 DO $$
 DECLARE
   images_type TEXT;
@@ -264,21 +267,27 @@ BEGIN
     AND column_name = 'images';
 
   IF images_type = '_text' THEN
-    INSERT INTO templates (name, subtitle, description, style, slug, renderer_key, is_featured, images)
+    INSERT INTO templates (name, subtitle, description, style, slug, renderer_key, is_featured, catalog_visible, demo_url, images)
     VALUES
-      ('Classic Dark', 'Undangan digital elegan dengan tema gelap minimalis', 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.', 'Modern', 'delta-gray', 'delta-gray', true, ARRAY['/classicdark1.webp', '/classicdark2.webp', '/classicdark3.webp', '/classicdark4.webp', '/classicdark5.webp', '/classicdark6.webp', '/classicdark7.webp', '/classicdark8.webp', '/classicdark9.webp']),
-      ('Romantic Floral', 'Undangan digital romantis dengan dekorasi bunga', 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.', 'Floral', 'pink-flower', 'pink-flower', true, ARRAY['/flower1.webp', '/flower2.webp', '/flower3.webp', '/flower4.webp', '/flower5.webp', '/flower6.webp', '/flower7.webp', '/flower8.webp', '/flower9.webp']),
-      ('Javanese Gold', 'Undangan digital tradisional Jawa dengan aksen emas', 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.', 'Classic', 'javanese', 'javanese', true, ARRAY['/jawa1.webp', '/jawa2.webp', '/jawa3.webp', '/jawa4.webp', '/jawa5.webp', '/jawa6.webp', '/jawa7.webp', '/jawa8.webp', '/jawa9.webp', '/jawa10.webp']),
-      ('Mahogany', 'Elegant mahogany invitation', 'An elegant ivory and mahogany invitation with editorial photography.', 'Classic', 'mahogany', 'mahogany', false, ARRAY['/templates/mahogany/walk.jpg', '/templates/mahogany/couple.jpg', '/templates/mahogany/rings.jpg'])
-    ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle, style = EXCLUDED.style, images = EXCLUDED.images;
+      ('Classic Dark', 'Undangan digital elegan dengan tema gelap minimalis', 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.', 'Modern', 'classic-dark', NULL, true, true, 'https://invitation-delta-gray.vercel.app/', ARRAY['/classicdark1.webp', '/classicdark2.webp', '/classicdark3.webp', '/classicdark4.webp', '/classicdark5.webp', '/classicdark6.webp', '/classicdark7.webp', '/classicdark8.webp', '/classicdark9.webp']),
+      ('Romantic Floral', 'Undangan digital romantis dengan dekorasi bunga', 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.', 'Floral', 'romantic-floral', NULL, true, true, 'https://invitation-pink-flower.vercel.app/', ARRAY['/flower1.webp', '/flower2.webp', '/flower3.webp', '/flower4.webp', '/flower5.webp', '/flower6.webp', '/flower7.webp', '/flower8.webp', '/flower9.webp']),
+      ('Javanese Gold', 'Undangan digital tradisional Jawa dengan aksen emas', 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.', 'Classic', 'javanese-gold', NULL, true, true, 'https://undanganjawa-three.vercel.app/', ARRAY['/jawa1.webp', '/jawa2.webp', '/jawa3.webp', '/jawa4.webp', '/jawa5.webp', '/jawa6.webp', '/jawa7.webp', '/jawa8.webp', '/jawa9.webp', '/jawa10.webp']),
+      ('Delta Gray Renderer', 'Internal renderer', 'Technical renderer row.', 'Modern', 'delta-gray', 'delta-gray', false, false, NULL, ARRAY['/classicdark1.webp']),
+      ('Pink Flower Renderer', 'Internal renderer', 'Technical renderer row.', 'Floral', 'pink-flower', 'pink-flower', false, false, NULL, ARRAY['/flower1.webp']),
+      ('Javanese Renderer', 'Internal renderer', 'Technical renderer row.', 'Classic', 'javanese', 'javanese', false, false, NULL, ARRAY['/jawa1.webp']),
+      ('Mahogany', 'Undangan elegan bernuansa mahogany', 'Undangan digital bernuansa mahogany dan ivory dengan tampilan editorial.', 'Classic', 'mahogany', 'mahogany', false, true, NULL, ARRAY['/templates/mahogany/walk.jpg', '/templates/mahogany/couple.jpg', '/templates/mahogany/rings.jpg'])
+    ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle, style = EXCLUDED.style, is_featured = EXCLUDED.is_featured, catalog_visible = EXCLUDED.catalog_visible, demo_url = EXCLUDED.demo_url, images = EXCLUDED.images;
   ELSE
-    INSERT INTO templates (name, subtitle, description, style, slug, renderer_key, is_featured, images)
+    INSERT INTO templates (name, subtitle, description, style, slug, renderer_key, is_featured, catalog_visible, demo_url, images)
     VALUES
-      ('Classic Dark', 'Undangan digital elegan dengan tema gelap minimalis', 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.', 'Modern', 'delta-gray', 'delta-gray', true, '["/classicdark1.webp", "/classicdark2.webp", "/classicdark3.webp", "/classicdark4.webp", "/classicdark5.webp", "/classicdark6.webp", "/classicdark7.webp", "/classicdark8.webp", "/classicdark9.webp"]'::jsonb),
-      ('Romantic Floral', 'Undangan digital romantis dengan dekorasi bunga', 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.', 'Floral', 'pink-flower', 'pink-flower', true, '["/flower1.webp", "/flower2.webp", "/flower3.webp", "/flower4.webp", "/flower5.webp", "/flower6.webp", "/flower7.webp", "/flower8.webp", "/flower9.webp"]'::jsonb),
-      ('Javanese Gold', 'Undangan digital tradisional Jawa dengan aksen emas', 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.', 'Classic', 'javanese', 'javanese', true, '["/jawa1.webp", "/jawa2.webp", "/jawa3.webp", "/jawa4.webp", "/jawa5.webp", "/jawa6.webp", "/jawa7.webp", "/jawa8.webp", "/jawa9.webp", "/jawa10.webp"]'::jsonb),
-      ('Mahogany', 'Elegant mahogany invitation', 'An elegant ivory and mahogany invitation with editorial photography.', 'Classic', 'mahogany', 'mahogany', false, '["/templates/mahogany/walk.jpg", "/templates/mahogany/couple.jpg", "/templates/mahogany/rings.jpg"]'::jsonb)
-    ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle, style = EXCLUDED.style, images = EXCLUDED.images;
+      ('Classic Dark', 'Undangan digital elegan dengan tema gelap minimalis', 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.', 'Modern', 'classic-dark', NULL, true, true, 'https://invitation-delta-gray.vercel.app/', '["/classicdark1.webp", "/classicdark2.webp", "/classicdark3.webp", "/classicdark4.webp", "/classicdark5.webp", "/classicdark6.webp", "/classicdark7.webp", "/classicdark8.webp", "/classicdark9.webp"]'::jsonb),
+      ('Romantic Floral', 'Undangan digital romantis dengan dekorasi bunga', 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.', 'Floral', 'romantic-floral', NULL, true, true, 'https://invitation-pink-flower.vercel.app/', '["/flower1.webp", "/flower2.webp", "/flower3.webp", "/flower4.webp", "/flower5.webp", "/flower6.webp", "/flower7.webp", "/flower8.webp", "/flower9.webp"]'::jsonb),
+      ('Javanese Gold', 'Undangan digital tradisional Jawa dengan aksen emas', 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.', 'Classic', 'javanese-gold', NULL, true, true, 'https://undanganjawa-three.vercel.app/', '["/jawa1.webp", "/jawa2.webp", "/jawa3.webp", "/jawa4.webp", "/jawa5.webp", "/jawa6.webp", "/jawa7.webp", "/jawa8.webp", "/jawa9.webp", "/jawa10.webp"]'::jsonb),
+      ('Delta Gray Renderer', 'Internal renderer', 'Technical renderer row.', 'Modern', 'delta-gray', 'delta-gray', false, false, NULL, '["/classicdark1.webp"]'::jsonb),
+      ('Pink Flower Renderer', 'Internal renderer', 'Technical renderer row.', 'Floral', 'pink-flower', 'pink-flower', false, false, NULL, '["/flower1.webp"]'::jsonb),
+      ('Javanese Renderer', 'Internal renderer', 'Technical renderer row.', 'Classic', 'javanese', 'javanese', false, false, NULL, '["/jawa1.webp"]'::jsonb),
+      ('Mahogany', 'Undangan elegan bernuansa mahogany', 'Undangan digital bernuansa mahogany dan ivory dengan tampilan editorial.', 'Classic', 'mahogany', 'mahogany', false, true, NULL, '["/templates/mahogany/walk.jpg", "/templates/mahogany/couple.jpg", "/templates/mahogany/rings.jpg"]'::jsonb)
+    ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle, style = EXCLUDED.style, is_featured = EXCLUDED.is_featured, catalog_visible = EXCLUDED.catalog_visible, demo_url = EXCLUDED.demo_url, images = EXCLUDED.images;
   END IF;
 END $$;
 

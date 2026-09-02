@@ -95,6 +95,12 @@ DECLARE
 BEGIN
   p_slug := lower(btrim(p_slug));
   p_template_slug := lower(btrim(p_template_slug));
+  p_template_slug := CASE p_template_slug
+    WHEN 'classic-dark' THEN 'delta-gray'
+    WHEN 'romantic-floral' THEN 'pink-flower'
+    WHEN 'javanese-gold' THEN 'javanese'
+    ELSE p_template_slug
+  END;
 
   IF p_slug !~ '^[a-z0-9]+(?:-[a-z0-9]+)*$' OR char_length(p_slug) NOT BETWEEN 3 AND 100 THEN
     RAISE EXCEPTION 'Slug harus 3-100 karakter: huruf kecil, angka, dan tanda hubung.';

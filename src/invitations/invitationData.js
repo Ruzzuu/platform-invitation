@@ -71,7 +71,7 @@ export function createSampleInvitation(rendererKey = 'pink-flower') {
 }
 
 export function normalizeInvitationRow(row) {
-  const rendererKey = row.templates?.renderer_key || row.renderer_key || 'pink-flower'
+  const rendererKey = row.templates?.renderer_key || row.renderer_key || row.template_slug || 'pink-flower'
   const fallback = createSampleInvitation(rendererKey)
   const gift = row.gift && typeof row.gift === 'object' && !Array.isArray(row.gift) ? row.gift : {}
   const bankName = gift.bank_name || gift.bankName || ''

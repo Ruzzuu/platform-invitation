@@ -1,11 +1,12 @@
 -- Contoh satu command untuk membuat undangan pelanggan.
 -- 1. Upload media ke Storage: invitation-assets/customers/{slug}/
 -- 2. Ganti seluruh data dan URL contoh di bawah.
--- 3. Jalankan setelah invitation-lifecycle.sql berhasil.
+-- 3. Gunakan slug katalog: classic-dark, romantic-floral, javanese-gold, atau mahogany.
+-- 4. Jalankan setelah invitation-lifecycle.sql dan mahogany-template.sql berhasil.
 
 SELECT * FROM public.create_customer_invitation(
   p_slug          => 'siti-nur-alfatihana',
-  p_template_slug => 'pink-flower',
+  p_template_slug => 'romantic-floral',
   p_expires_at    => '2027-10-24 23:59:59+07'::timestamptz,
   p_data           => $data$
   {

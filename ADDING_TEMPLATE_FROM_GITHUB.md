@@ -73,6 +73,8 @@ Setelah code produksi berhasil, buka Supabase SQL Editor, salin seluruh isi `mah
 
 Hasil terakhir harus menampilkan satu baris dengan `slug = mahogany` dan `renderer_key = mahogany`.
 
+Katalog memakai `catalog_visible`: row produk yang dilihat pengunjung terpisah dari row teknis renderer. Jangan menghapus row teknis karena undangan customer lama dapat mereferensikannya.
+
 ## 7. Buat undangan customer Mahogany
 
 Upload media customer ke bucket:

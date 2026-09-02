@@ -32,6 +32,12 @@ DECLARE
 BEGIN
   p_slug := lower(btrim(p_slug));
   p_template_slug := lower(btrim(p_template_slug));
+  p_template_slug := CASE p_template_slug
+    WHEN 'classic-dark' THEN 'delta-gray'
+    WHEN 'romantic-floral' THEN 'pink-flower'
+    WHEN 'javanese-gold' THEN 'javanese'
+    ELSE p_template_slug
+  END;
 
   IF p_slug !~ '^[a-z0-9]+(?:-[a-z0-9]+)*$' OR char_length(p_slug) NOT BETWEEN 3 AND 100 THEN
     RAISE EXCEPTION 'Slug harus 3-100 karakter: huruf kecil, angka, dan tanda hubung.';
@@ -151,6 +157,29 @@ USING (
   AND (expires_at IS NULL OR expires_at > NOW())
 );
 
+ALTER TABLE public.templates
+  ADD COLUMN IF NOT EXISTS catalog_visible BOOLEAN DEFAULT true;
+
+UPDATE public.templates
+SET catalog_visible = true,
+    is_featured = true,
+    demo_url = CASE slug
+      WHEN 'classic-dark' THEN 'https://invitation-delta-gray.vercel.app/'
+      WHEN 'romantic-floral' THEN 'https://invitation-pink-flower.vercel.app/'
+      WHEN 'javanese-gold' THEN 'https://undanganjawa-three.vercel.app/'
+    END
+WHERE slug IN ('classic-dark', 'romantic-floral', 'javanese-gold');
+
+-- These rows remain available as technical renderers and may be referenced by
+-- existing invitations, but they are intentionally hidden from the storefront.
+UPDATE public.templates
+SET catalog_visible = false, is_featured = false
+WHERE slug IN ('delta-gray', 'pink-flower', 'javanese');
+
+UPDATE public.templates SET catalog_visible = true WHERE catalog_visible IS NULL;
+ALTER TABLE public.templates ALTER COLUMN catalog_visible SET DEFAULT true;
+ALTER TABLE public.templates ALTER COLUMN catalog_visible SET NOT NULL;
+
 DO $$
 DECLARE
   images_type TEXT;
@@ -162,44 +191,18 @@ BEGIN
     AND column_name = 'images';
 
   IF images_type = '_text' THEN
-    UPDATE public.templates SET
-      name = 'Classic Dark',
-      subtitle = 'Undangan digital elegan dengan tema gelap minimalis',
-      description = 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.',
-      style = 'Modern',
-      is_featured = true,
-      images = ARRAY['/classicdark1.webp', '/classicdark2.webp', '/classicdark3.webp', '/classicdark4.webp', '/classicdark5.webp', '/classicdark6.webp', '/classicdark7.webp', '/classicdark8.webp', '/classicdark9.webp']
-    WHERE slug = 'delta-gray';
-
-    UPDATE public.templates SET
-      name = 'Romantic Floral',
-      subtitle = 'Undangan digital romantis dengan dekorasi bunga',
-      description = 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.',
-      style = 'Floral',
-      is_featured = true,
-      images = ARRAY['/flower1.webp', '/flower2.webp', '/flower3.webp', '/flower4.webp', '/flower5.webp', '/flower6.webp', '/flower7.webp', '/flower8.webp', '/flower9.webp']
-    WHERE slug = 'pink-flower';
-
-    UPDATE public.templates SET
-      name = 'Javanese Gold',
-      subtitle = 'Undangan digital tradisional Jawa dengan aksen emas',
-      description = 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.',
-      style = 'Classic',
-      is_featured = true,
-      images = ARRAY['/jawa1.webp', '/jawa2.webp', '/jawa3.webp', '/jawa4.webp', '/jawa5.webp', '/jawa6.webp', '/jawa7.webp', '/jawa8.webp', '/jawa9.webp', '/jawa10.webp']
-    WHERE slug = 'javanese';
-
     INSERT INTO public.templates (
       name, subtitle, description, style, slug, renderer_key,
-      is_featured, images
+      is_featured, catalog_visible, images
     ) VALUES (
       'Mahogany',
-      'Elegant mahogany invitation',
-      'An elegant ivory and mahogany invitation with editorial photography.',
+      'Undangan elegan bernuansa mahogany',
+      'Undangan digital bernuansa mahogany dan ivory dengan tampilan editorial.',
       'Classic',
       'mahogany',
       'mahogany',
       false,
+      true,
       ARRAY[
         '/templates/mahogany/walk.jpg',
         '/templates/mahogany/couple.jpg',
@@ -213,46 +216,21 @@ BEGIN
       style = EXCLUDED.style,
       renderer_key = EXCLUDED.renderer_key,
       is_featured = EXCLUDED.is_featured,
+      catalog_visible = EXCLUDED.catalog_visible,
       images = EXCLUDED.images;
   ELSIF images_type = 'jsonb' THEN
-    UPDATE public.templates SET
-      name = 'Classic Dark',
-      subtitle = 'Undangan digital elegan dengan tema gelap minimalis',
-      description = 'Undangan digital modern dengan nuansa gelap dan tipografi elegan.',
-      style = 'Modern',
-      is_featured = true,
-      images = '["/classicdark1.webp", "/classicdark2.webp", "/classicdark3.webp", "/classicdark4.webp", "/classicdark5.webp", "/classicdark6.webp", "/classicdark7.webp", "/classicdark8.webp", "/classicdark9.webp"]'::jsonb
-    WHERE slug = 'delta-gray';
-
-    UPDATE public.templates SET
-      name = 'Romantic Floral',
-      subtitle = 'Undangan digital romantis dengan dekorasi bunga',
-      description = 'Undangan lembut dengan ilustrasi bunga dan animasi pembuka.',
-      style = 'Floral',
-      is_featured = true,
-      images = '["/flower1.webp", "/flower2.webp", "/flower3.webp", "/flower4.webp", "/flower5.webp", "/flower6.webp", "/flower7.webp", "/flower8.webp", "/flower9.webp"]'::jsonb
-    WHERE slug = 'pink-flower';
-
-    UPDATE public.templates SET
-      name = 'Javanese Gold',
-      subtitle = 'Undangan digital tradisional Jawa dengan aksen emas',
-      description = 'Undangan bernuansa Jawa klasik dengan ornamen wayang dan aksen emas.',
-      style = 'Classic',
-      is_featured = true,
-      images = '["/jawa1.webp", "/jawa2.webp", "/jawa3.webp", "/jawa4.webp", "/jawa5.webp", "/jawa6.webp", "/jawa7.webp", "/jawa8.webp", "/jawa9.webp", "/jawa10.webp"]'::jsonb
-    WHERE slug = 'javanese';
-
     INSERT INTO public.templates (
       name, subtitle, description, style, slug, renderer_key,
-      is_featured, images
+      is_featured, catalog_visible, images
     ) VALUES (
       'Mahogany',
-      'Elegant mahogany invitation',
-      'An elegant ivory and mahogany invitation with editorial photography.',
+      'Undangan elegan bernuansa mahogany',
+      'Undangan digital bernuansa mahogany dan ivory dengan tampilan editorial.',
       'Classic',
       'mahogany',
       'mahogany',
       false,
+      true,
       '["/templates/mahogany/walk.jpg", "/templates/mahogany/couple.jpg", "/templates/mahogany/rings.jpg"]'::jsonb
     )
     ON CONFLICT (slug) DO UPDATE SET
@@ -262,32 +240,16 @@ BEGIN
       style = EXCLUDED.style,
       renderer_key = EXCLUDED.renderer_key,
       is_featured = EXCLUDED.is_featured,
+      catalog_visible = EXCLUDED.catalog_visible,
       images = EXCLUDED.images;
   ELSE
     RAISE EXCEPTION 'Tipe kolom templates.images tidak didukung: %', images_type;
   END IF;
 END $$;
 
--- Delete only duplicate product rows that are not referenced by any invitation.
--- Referenced legacy rows stay in the database, but the storefront hides them
--- because they do not have renderer_key.
-DELETE FROM public.templates AS legacy
-WHERE legacy.slug IN ('classic-dark', 'romantic-floral', 'javanese-gold')
-  AND NOT EXISTS (
-    SELECT 1 FROM public.invitations
-    WHERE invitations.template_id = legacy.id
-       OR invitations.template_slug = legacy.slug
-  );
-
-SELECT slug, renderer_key, name, is_featured, images
+SELECT slug, renderer_key, name, is_featured, catalog_visible, images
 FROM public.templates
-WHERE renderer_key IS NOT NULL
 ORDER BY created_at, slug;
-
-SELECT slug AS retained_legacy_slug
-FROM public.templates
-WHERE slug IN ('classic-dark', 'romantic-floral', 'javanese-gold')
-ORDER BY slug;
 
 SELECT policyname, roles, cmd, qual AS using_expression
 FROM pg_policies

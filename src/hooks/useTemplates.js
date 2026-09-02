@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
 const PAGE_SIZE = 9
+const LEGACY_CATALOG_SLUGS = ['classic-dark', 'romantic-floral', 'javanese-gold', 'mahogany']
 
 /**
  * Fetch a list of templates with optional filtering, sorting, and pagination.
@@ -29,24 +30,34 @@ export function useTemplates({ style = 'All', sort = 'featured', page = 1, featu
       const from = (page - 1) * pageSize
       const to = from + pageSize - 1
 
-      let query = supabase
-        .from('templates')
-        .select('*', { count: 'exact' })
-        .not('renderer_key', 'is', null)
+      async function runQuery(useVisibilityColumn) {
+        let query = supabase
+          .from('templates')
+          .select('*', { count: 'exact' })
 
-      if (featuredOnly) query = query.eq('is_featured', true)
-      if (style && style !== 'All') query = query.eq('style', style)
+        query = useVisibilityColumn
+          ? query.eq('catalog_visible', true)
+          : query.in('slug', LEGACY_CATALOG_SLUGS)
 
-      switch (sort) {
-        case 'price_asc':  query = query.order('price', { ascending: true });  break
-        case 'price_desc': query = query.order('price', { ascending: false }); break
-        case 'newest':     query = query.order('created_at', { ascending: false }); break
-        default:           query = query.order('is_featured', { ascending: false }).order('created_at', { ascending: true })
+        if (featuredOnly) query = query.eq('is_featured', true)
+        if (style && style !== 'All') query = query.eq('style', style)
+
+        switch (sort) {
+          case 'price_asc':  query = query.order('price', { ascending: true });  break
+          case 'price_desc': query = query.order('price', { ascending: false }); break
+          case 'newest':     query = query.order('created_at', { ascending: false }); break
+          default:           query = query.order('is_featured', { ascending: false }).order('created_at', { ascending: true })
+        }
+
+        return query.range(from, to)
       }
 
-      query = query.range(from, to)
+      let result = await runQuery(true)
+      if (result.error?.code === '42703' || result.error?.message?.includes('catalog_visible')) {
+        result = await runQuery(false)
+      }
 
-      const { data: rows, count, error: err } = await query
+      const { data: rows, count, error: err } = result
 
       if (cancelled) return
       if (err) { setError(err.message); setLoading(false); return }
