@@ -218,6 +218,13 @@ function timeAgo(value) {
   return `${Math.floor(minutes / 1440)} hari lalu`
 }
 
+// The original Mahogany invitation already has live responses under this
+// legacy slug. Keep that history visible from the customer's new URL and
+// keep future submissions in the same shared guest book.
+function responseSlug(invitation) {
+  return invitation.slug === 'siti-nur-alfatihana' ? 'alfa-rizaldy' : invitation.slug
+}
+
 export function MahoganyGallery() {
   const { invitation } = useInvitationContext()
   const [wishes, setWishes] = useState([])
@@ -235,7 +242,7 @@ export function MahoganyGallery() {
 
   useEffect(() => {
     if (!invitation.id) return
-    supabase.from('invitation_wishes').select('id,name,message,created_at').eq('invitation_id', invitation.id).order('created_at', { ascending: false }).limit(50).then(({ data }) => setWishes(data || []))
+    supabase.from('wishes').select('id,name,message,created_at').eq('invitation_slug', responseSlug(invitation)).order('created_at', { ascending: false }).limit(50).then(({ data }) => setWishes(data || []))
   }, [invitation.id])
 
   useEffect(() => {
@@ -252,7 +259,7 @@ export function MahoganyGallery() {
     rsvpSubmitting.current = true
     setSending(true)
     setNotice('')
-    const { error } = await supabase.from('invitation_rsvps').insert({ invitation_id: invitation.id, name: rsvpName.trim(), attending, guest_count: attending ? guestCount : 0 })
+    const { error } = await supabase.from('rsvp').insert({ invitation_slug: responseSlug(invitation), name: rsvpName.trim(), hadir: attending, jumlah_tamu: attending ? guestCount : 0 })
     setSending(false)
     rsvpSubmitting.current = false
     setNotice(error ? 'Gagal mengirim konfirmasi. Silakan coba lagi.' : 'Konfirmasi kehadiran telah diterima. Terima kasih!')
@@ -265,7 +272,7 @@ export function MahoganyGallery() {
     wishSubmitting.current = true
     setSending(true)
     setNotice('')
-    const { data, error } = await supabase.from('invitation_wishes').insert({ invitation_id: invitation.id, name: wishName.trim(), message: message.trim() }).select('id,name,message,created_at').single()
+    const { data, error } = await supabase.from('wishes').insert({ invitation_slug: responseSlug(invitation), name: wishName.trim(), message: message.trim() }).select('id,name,message,created_at').single()
     setSending(false)
     wishSubmitting.current = false
     if (error) setNotice('Gagal mengirim ucapan. Silakan coba lagi.')
