@@ -151,7 +151,7 @@ export function MahoganyCouple() {
     <div className="min-h-full rounded-t-3xl bg-ivory px-6 pb-8 pt-14 text-mahogany shadow-[0_-10px_24px_rgba(0,0,0,.16)]">
       <FadeIn className="mb-9 text-center">
         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-mahogany/60">The Couple</p>
-        <p className="mx-auto max-w-sm text-xs leading-relaxed text-mahogany/80">{invitation.introText}</p>
+        <p className="mx-auto max-w-sm whitespace-pre-line text-xs leading-relaxed text-mahogany/80">{invitation.introText}</p>
       </FadeIn>
       <PersonCard person={invitation.bride} />
       <PersonCard person={invitation.groom} />
@@ -379,7 +379,7 @@ export function MahoganyClosing() {
       <div className="absolute bottom-6 left-6 h-16 w-16 rounded-bl-3xl border-b-2 border-l-2 border-ivory opacity-70" />
       <div className="absolute bottom-6 right-6 h-16 w-16 rounded-br-3xl border-b-2 border-r-2 border-ivory opacity-70" />
       <FadeIn className="relative z-10 mx-auto max-w-xl">
-        <p className="font-serif text-lg leading-relaxed text-ivory/90">{invitation.closingText}</p>
+        <p className="whitespace-pre-line font-serif text-lg leading-relaxed text-ivory/90">{invitation.closingText}</p>
         <p className="my-10 font-serif text-xl">{invitation.closingGreeting}</p>
         <h2 className="mb-8 font-serif text-3xl">Kami yang berbahagia</h2>
         <div className="space-y-8">
