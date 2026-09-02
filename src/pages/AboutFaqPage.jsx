@@ -25,9 +25,9 @@ const FAQ_DATA = [
 ]
 
 const STATS = [
-  { value: '10K+', label: 'Happy Couples' },
-  { value: '200+', label: 'Templates' },
-  { value: '4.9', label: 'Average Rating' },
+  { value: '1', label: 'Couples' },
+  { value: '4', label: 'Templates' },
+  { value: '4.5', label: 'Rating' },
   { value: '24/7', label: 'Support' },
 ]
 
