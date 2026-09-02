@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
-const WA_CONTACT = 'https://wa.me/6281515263851?text=Halo%20Eterna!%20Saya%20butuh%20bantuan.'
+const WA_CONTACT = 'https://wa.me/6281515263851?text=Halo%20Lembaranbaru!%20Saya%20butuh%20bantuan.'
 
 export default function Footer() {
   const [email, setEmail] = useState('')
@@ -90,7 +90,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-cream/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-cream/40">
-          <p>&copy; 2024 Eterna Invitations. All rights reserved.</p>
+          <p>&copy; 2024 Lembaranbaru. All rights reserved.</p>
           <div className="flex gap-4">
             <span className="material-symbols-outlined text-lg hover:text-pink-400 transition cursor-pointer">photo_camera</span>
             <span className="material-symbols-outlined text-lg hover:text-pink-400 transition cursor-pointer">push_pin</span>

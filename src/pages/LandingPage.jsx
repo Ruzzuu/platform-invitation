@@ -106,7 +106,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 py-20 md:py-28">
           <FadeIn>
             <div className="text-center mb-14">
-              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Why Choose Eterna?</h2>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Why Choose Lembaranbaru?</h2>
               <p className="text-warm-gray max-w-xl mx-auto">
                 Everything you need to create stunning wedding stationery, without the hassle.
               </p>
@@ -165,7 +165,7 @@ export default function LandingPage() {
               Create Your Dream Invitation
             </h2>
             <p className="text-white/60 mb-10 max-w-xl mx-auto">
-              Join thousands of happy couples who chose Eterna for their special day.
+              Join thousands of happy couples who chose Lembaranbaru for their special day.
             </p>
             <Link
               to="/catalog"

@@ -45,7 +45,7 @@ export default function CenterCard() {
           className="flex-1 flex items-center justify-center px-6 py-3 rounded-full bg-gray-100/80 text-dark font-semibold text-sm hover:bg-gray-200/90 transition shadow-sm"
           onClick={e => {
             e.preventDefault()
-            window.open('https://wa.me/6281515263851?text=Halo%20Eterna!%20Saya%20tertarik%20dengan%20jasa%20custom%20design%20undangan.%20Bisa%20minta%20informasi%20lebih%20lanjut%3F', '_blank')
+            window.open('https://wa.me/6281515263851?text=Halo%20Lembaranbaru!%20Saya%20tertarik%20dengan%20jasa%20custom%20design%20undangan.%20Bisa%20minta%20informasi%20lebih%20lanjut%3F', '_blank')
           }}
         >
           Request Custom Design

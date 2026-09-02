@@ -7,7 +7,7 @@ export default function TemplateCard({ id, image, title, subtitle, price, badge 
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
         />
         {badge && (

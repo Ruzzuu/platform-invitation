@@ -61,7 +61,7 @@ export default function TemplateDetails() {
     if (!form.whatsapp.trim()) { setFormError('Nomor WhatsApp wajib diisi'); return }
 
     const msg = [
-      'Halo Eterna! 👋',
+      'Halo Lembaranbaru! 👋',
       'Saya ingin memesan template undangan:',
       '',
       `📋 Template: ${product.name}`,
@@ -119,7 +119,7 @@ export default function TemplateDetails() {
                 <img
                   src={images[selectedImg]}
                   alt={product.name}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                 />
                 {product.badge && (
                   <span className="absolute top-4 left-4 px-4 py-1.5 text-xs font-semibold rounded-full bg-pink-500 text-white">
@@ -136,7 +136,7 @@ export default function TemplateDetails() {
                       selectedImg === i ? 'border-pink-400' : 'border-transparent hover:border-cream-dark'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-contain" />
+                    <img src={img} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>

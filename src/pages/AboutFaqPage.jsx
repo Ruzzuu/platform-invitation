@@ -58,7 +58,7 @@ export default function AboutFaqPage() {
                 <p>
                   We believe that beautiful wedding stationery shouldn&apos;t be complicated or
                   prohibitively expensive. Founded in 2020 by a team of passionate designers,
-                  Eterna was created to bridge the gap between bespoke design and accessible
+                  Lembaranbaru was created to bridge the gap between bespoke design and accessible
                   DIY templates.
                 </p>
                 <p>
@@ -124,7 +124,7 @@ export default function AboutFaqPage() {
           <div className="mt-12 text-center">
             <p className="text-warm-gray mb-4">Masih ada pertanyaan?</p>
             <a
-              href="https://wa.me/6281515263851?text=Halo%20Eterna!%20Saya%20butuh%20bantuan%20mengenai%20template%20undangan."
+              href="https://wa.me/6281515263851?text=Halo%20Lembaranbaru!%20Saya%20butuh%20bantuan%20mengenai%20template%20undangan."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-pink-500 text-white font-semibold hover:bg-pink-600 transition text-sm"
