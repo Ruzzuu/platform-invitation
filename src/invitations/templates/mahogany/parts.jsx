@@ -68,7 +68,7 @@ export function MahoganyCover({ onOpen }) {
 
       <div className="relative z-10 mt-16 w-full animate-fade-up px-6">
         <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-ivory/90 drop-shadow-md">The Wedding Of</p>
-        <h1 className="font-serif text-5xl uppercase leading-none text-ivory drop-shadow-lg">{bride.shortName} &amp; {groom.shortName}</h1>
+        <h1 className="font-serif text-5xl uppercase leading-none text-ivory drop-shadow-lg md:text-6xl">{bride.shortName} &amp; {groom.shortName}</h1>
       </div>
 
       <div className="relative z-10 mt-4 flex flex-1 animate-fade-up flex-col items-center justify-center anim-delay-100">
@@ -102,13 +102,13 @@ export function MahoganyHome() {
   return (
     <div className="min-h-full bg-mahogany pb-14 text-ivory">
       <div className="relative min-h-[220px] overflow-hidden px-6 pb-6 pt-8">
-        <PhotoBackground src={media.coverImageUrl} />
+        <PhotoBackground src={media.secondaryImageUrl} />
         <div className="absolute inset-0 bg-mahogany/45" />
         <div className="absolute inset-0 bg-gradient-to-t from-mahogany via-transparent to-mahogany/45" />
         <div className="relative z-10 flex flex-col items-center text-center">
           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-ivory/85">The Wedding Of</p>
-          <h1 className="mt-2 font-serif text-5xl italic text-ivory drop-shadow-lg">{bride.shortName} &amp;</h1>
-          <h1 className="ml-12 mt-1 font-serif text-5xl italic text-ivory drop-shadow-lg">{groom.shortName}</h1>
+          <h1 className="mt-2 font-serif text-5xl italic text-ivory drop-shadow-lg md:text-6xl">{bride.shortName} &amp;</h1>
+          <h1 className="ml-12 mt-1 font-serif text-5xl italic text-ivory drop-shadow-lg md:text-6xl">{groom.shortName}</h1>
         </div>
       </div>
 
@@ -165,12 +165,12 @@ export function MahoganyEvents() {
   return (
     <div className="min-h-full bg-mahogany pb-10">
       <div className="relative overflow-hidden px-6 pb-14 pt-10 text-center text-ivory">
-        <PhotoBackground src={invitation.media.eventImageUrl} contain />
+        <PhotoBackground src={invitation.media.secondaryImageUrl} contain />
         <div className="absolute inset-0 bg-mahogany/55" />
         <div className="absolute inset-0 bg-gradient-to-t from-mahogany via-transparent to-mahogany/40" />
         <FadeIn className="relative z-10">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-ivory/70">The Day</p>
-          <h2 className="mb-7 font-serif text-4xl tracking-widest">WEDDING<span className="-mt-3 block font-script text-5xl normal-case tracking-normal opacity-90">Event</span></h2>
+          <h2 className="mb-7 font-serif text-4xl tracking-widest md:text-5xl">WEDDING<br /><span className="-mt-3 block font-script text-5xl normal-case tracking-normal opacity-90 md:text-6xl">Event</span></h2>
           {invitation.events.map((event, index) => (
             <div key={`${event.name}-${index}`} className="mb-7">
               <h3 className="mb-3 font-serif text-2xl uppercase tracking-widest">{event.name}</h3>

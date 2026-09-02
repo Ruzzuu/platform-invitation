@@ -56,9 +56,9 @@ export default function MahoganyTemplate() {
   }
 
   return (
-    <div className="mahogany-theme min-h-[100dvh] bg-[#271006] text-ivory">
+    <div className="mahogany-theme min-h-[100dvh] w-full bg-mahogany text-ivory">
       {invitation.media.musicUrl && <audio ref={audioRef} src={invitation.media.musicUrl} preload="none" loop />}
-      <div className="relative mx-auto h-[100dvh] w-full max-w-[430px] overflow-hidden bg-mahogany shadow-2xl">
+      <div className="relative mx-auto h-[100dvh] w-full overflow-hidden bg-mahogany shadow-2xl">
         {!opened ? (
           <MahoganyCover onOpen={openInvitation} />
         ) : (

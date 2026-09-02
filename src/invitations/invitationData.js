@@ -1,4 +1,4 @@
-const DEFAULT_QUOTE = 'Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu merasa tenteram di sampingnya, dan dijadikan-Nya di antaramu rasa kasih dan sayang.'
+const DEFAULT_QUOTE = 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari (jenis) dirimu sendiri, agar kamu merasa tenteram kepadanya. Dan Dia menjadikan di antaramu rasa cinta dan kasih sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.'
 
 const ASSETS = {
   'delta-gray': '/templates/delta-gray',
