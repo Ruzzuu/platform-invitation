@@ -22,7 +22,7 @@ export default function InvitationPage() {
   if (!Renderer) return <FullPageMessage><p>Desain undangan ini belum tersedia.</p></FullPageMessage>
 
   const rawGuest = searchParams.get('to')?.trim().slice(0, 80)
-  const guestName = rawGuest || 'Bapak/Ibu/Saudara/i'
+  const guestName = rawGuest || 'Yang Terhormat'
   return (
     <InvitationProvider invitation={data} guestName={guestName}>
       <Suspense fallback={<FullPageMessage><p className="animate-pulse">Menyiapkan desain…</p></FullPageMessage>}>
