@@ -6,6 +6,7 @@ ALTER TABLE public.invitations ADD COLUMN IF NOT EXISTS couple_name TEXT;
 ALTER TABLE public.invitations ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
 ALTER TABLE public.invitations ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ;
 ALTER TABLE public.invitations ADD COLUMN IF NOT EXISTS archived_at TIMESTAMPTZ;
+ALTER TABLE public.invitations ADD COLUMN IF NOT EXISTS gift JSONB DEFAULT '{"enabled":false}'::jsonb;
 
 UPDATE public.invitations i
 SET template_slug = t.slug
@@ -17,6 +18,7 @@ SET couple_name = concat_ws(' & ', bride_short_name, groom_short_name)
 WHERE couple_name IS NULL;
 
 UPDATE public.invitations SET is_active = true WHERE is_active IS NULL;
+UPDATE public.invitations SET gift = '{"enabled":false}'::jsonb WHERE gift IS NULL;
 
 ALTER TABLE public.invitations DROP CONSTRAINT IF EXISTS invitations_status_check;
 ALTER TABLE public.invitations ADD CONSTRAINT invitations_status_check
@@ -89,6 +91,7 @@ DECLARE
   v_events JSONB;
   v_love_story JSONB;
   v_gallery JSONB;
+  v_gift JSONB;
 BEGIN
   p_slug := lower(btrim(p_slug));
   p_template_slug := lower(btrim(p_template_slug));
@@ -129,8 +132,12 @@ BEGIN
   v_events := COALESCE(p_data->'events', '[]'::jsonb);
   v_love_story := COALESCE(p_data->'love_story', '[]'::jsonb);
   v_gallery := COALESCE(p_data->'gallery_urls', '[]'::jsonb);
+  v_gift := COALESCE(p_data->'gift', '{"enabled":false}'::jsonb);
   IF jsonb_typeof(v_events) <> 'array' OR jsonb_typeof(v_love_story) <> 'array' OR jsonb_typeof(v_gallery) <> 'array' THEN
     RAISE EXCEPTION 'events, love_story, dan gallery_urls harus berupa JSON array.';
+  END IF;
+  IF jsonb_typeof(v_gift) <> 'object' THEN
+    RAISE EXCEPTION 'gift harus berupa JSON object.';
   END IF;
 
   INSERT INTO public.invitations (
@@ -141,7 +148,7 @@ BEGIN
     events, love_story, cover_image_url, secondary_image_url, event_image_url,
     rsvp_background_url, gallery_urls, music_url, music_credit, closing_text,
     closing_greeting, bride_family_title, bride_family_detail,
-    groom_family_title, groom_family_detail, expires_at, archived_at
+    groom_family_title, groom_family_detail, gift, expires_at, archived_at
   ) VALUES (
     v_template_id, p_template_slug, p_slug, 'published',
     COALESCE(nullif(btrim(p_data->>'couple_name'), ''), v_bride_short || ' & ' || v_groom_short),
@@ -161,7 +168,7 @@ BEGIN
     nullif(p_data->>'closing_text', ''), nullif(p_data->>'closing_greeting', ''),
     nullif(p_data->>'bride_family_title', ''), nullif(p_data->>'bride_family_detail', ''),
     nullif(p_data->>'groom_family_title', ''), nullif(p_data->>'groom_family_detail', ''),
-    p_expires_at, NULL
+    v_gift, p_expires_at, NULL
   )
   RETURNING id INTO v_invitation_id;
 

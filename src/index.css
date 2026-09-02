@@ -43,3 +43,13 @@
   --color-blush: 212 175 55; --color-blush-dark: 163 128 31; --color-blush-light: 74 60 28;
   --color-sage: 143 112 34; --color-sage-dark: 99 76 20; --color-dark: 253 251 242; --color-warm-gray: 204 162 82;
 }
+.mahogany-theme {
+  --color-mahogany: 64 24 1;
+  --color-ivory: 239 239 240;
+}
+.mahogany-responsive-photo {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}

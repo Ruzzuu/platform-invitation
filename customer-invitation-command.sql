@@ -53,7 +53,13 @@ SELECT * FROM public.create_customer_invitation(
     "bride_family_title": "Keluarga mempelai wanita",
     "bride_family_detail": "Bapak Ahmad & Ibu Aminah",
     "groom_family_title": "Keluarga mempelai pria",
-    "groom_family_detail": "Bapak Hasan & Ibu Fatimah"
+    "groom_family_detail": "Bapak Hasan & Ibu Fatimah",
+    "gift": {
+      "enabled": false,
+      "bank_name": "",
+      "account_number": "",
+      "account_holder": ""
+    }
   }
   $data$::jsonb
 );

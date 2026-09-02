@@ -13,6 +13,8 @@ export default {
         'sage-dark': 'rgb(var(--color-sage-dark, 106 155 120) / <alpha-value>)',
         dark: 'rgb(var(--color-dark, 0 0 0) / <alpha-value>)',
         'warm-gray': 'rgb(var(--color-warm-gray, 138 126 116) / <alpha-value>)',
+        mahogany: 'rgb(var(--color-mahogany, 64 24 1) / <alpha-value>)',
+        ivory: 'rgb(var(--color-ivory, 239 239 240) / <alpha-value>)',
         gold: '#EC4899',
         'gold-dark': '#D4318A',
       },

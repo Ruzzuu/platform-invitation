@@ -4,6 +4,7 @@ const ASSETS = {
   'delta-gray': '/templates/delta-gray',
   'pink-flower': '/templates/pink-flower',
   javanese: '/templates/javanese',
+  mahogany: '/templates/mahogany',
 }
 
 export function templateAsset(rendererKey, file) {
@@ -13,9 +14,10 @@ export function templateAsset(rendererKey, file) {
 export function createSampleInvitation(rendererKey = 'pink-flower') {
   const isDark = rendererKey === 'delta-gray'
   const isJavanese = rendererKey === 'javanese'
+  const isMahogany = rendererKey === 'mahogany'
   const base = ASSETS[rendererKey] || ASSETS['pink-flower']
-  const bride = isJavanese ? 'Endah' : isDark ? 'Putri' : 'Milea'
-  const groom = isJavanese ? 'Gilang' : isDark ? 'Anto' : 'Dilan'
+  const bride = isMahogany ? 'Nadira' : isJavanese ? 'Endah' : isDark ? 'Putri' : 'Milea'
+  const groom = isMahogany ? 'Arga' : isJavanese ? 'Gilang' : isDark ? 'Anto' : 'Dilan'
 
   return {
     id: null,
@@ -23,8 +25,8 @@ export function createSampleInvitation(rendererKey = 'pink-flower') {
     status: 'preview',
     rendererKey,
     title: `Pernikahan ${bride} & ${groom}`,
-    bride: { shortName: bride, fullName: `${bride} Angelina`, parents: 'Putri dari Bapak Ahmad dan Ibu Aminah', photoUrl: isDark ? `${base}/perempuan.webp` : `${base}/wanita.webp` },
-    groom: { shortName: groom, fullName: `${groom} Renaldi`, parents: 'Putra dari Bapak Hasan dan Ibu Fatimah', photoUrl: isDark ? `${base}/laki.webp` : `${base}/pria.webp` },
+    bride: { shortName: bride, fullName: `${bride} Angelina`, parents: 'Putri dari Bapak Ahmad dan Ibu Aminah', photoUrl: isMahogany ? `${base}/bride.jpg` : isDark ? `${base}/perempuan.webp` : `${base}/wanita.webp` },
+    groom: { shortName: groom, fullName: `${groom} Renaldi`, parents: 'Putra dari Bapak Hasan dan Ibu Fatimah', photoUrl: isMahogany ? `${base}/groom.jpg` : isDark ? `${base}/laki.webp` : `${base}/pria.webp` },
     weddingAt: '2026-10-24T08:00:00+07:00',
     timezone: 'Asia/Jakarta',
     locationLabel: 'Jakarta, Indonesia',
@@ -42,13 +44,15 @@ export function createSampleInvitation(rendererKey = 'pink-flower') {
       { title: 'Menikah', year: '2026', text: 'Kami mengikat janji suci dan memulai perjalanan baru.' },
     ],
     media: {
-      coverImageUrl: isDark ? `${base}/foto.webp` : `${base}/pose1.webp`,
-      secondaryImageUrl: isDark ? `${base}/foto.webp` : `${base}/pose2.webp`,
-      eventImageUrl: isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
-      rsvpBackgroundUrl: isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
+      coverImageUrl: isMahogany ? `${base}/couple.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose1.webp`,
+      secondaryImageUrl: isMahogany ? `${base}/walk.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose2.webp`,
+      eventImageUrl: isMahogany ? `${base}/walk.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
+      rsvpBackgroundUrl: isMahogany ? `${base}/couple.jpg` : isDark ? `${base}/foto.webp` : `${base}/pose3.webp`,
       musicUrl: isDark ? `${base}/Nadhif Basalamah kota ini tak sama tanpamu.mp3` : isJavanese ? `${base}/Epic Orchestra Java Cinematic Javanese Orchestra Background Music.mp3` : '',
       musicCredit: isJavanese ? 'Javanese Cinematic Orchestra' : 'Lagu pilihan mempelai',
-      galleryUrls: isDark
+      galleryUrls: isMahogany
+        ? [`${base}/couple.jpg`, `${base}/bride.jpg`, `${base}/groom.jpg`, `${base}/walk.jpg`, `${base}/rings.jpg`]
+        : isDark
         ? [`${base}/foto.webp`, `${base}/laki.webp`, `${base}/perempuan.webp`]
         : [`${base}/pose1.webp`, `${base}/pose2.webp`, `${base}/pose3.webp`, `${base}/pria.webp`, `${base}/wanita.webp`],
     },
@@ -58,12 +62,17 @@ export function createSampleInvitation(rendererKey = 'pink-flower') {
     brideFamilyDetail: 'Bapak Ahmad & Ibu Aminah',
     groomFamilyTitle: 'Keluarga mempelai pria',
     groomFamilyDetail: 'Bapak Hasan & Ibu Fatimah',
+    gift: { enabled: false, bankName: '', accountNumber: '', accountHolder: '' },
   }
 }
 
 export function normalizeInvitationRow(row) {
   const rendererKey = row.templates?.renderer_key || row.renderer_key || 'pink-flower'
   const fallback = createSampleInvitation(rendererKey)
+  const gift = row.gift && typeof row.gift === 'object' && !Array.isArray(row.gift) ? row.gift : {}
+  const bankName = gift.bank_name || gift.bankName || ''
+  const accountNumber = gift.account_number || gift.accountNumber || ''
+  const accountHolder = gift.account_holder || gift.accountHolder || ''
   return {
     ...fallback,
     id: row.id,
@@ -106,6 +115,12 @@ export function normalizeInvitationRow(row) {
     brideFamilyDetail: row.bride_family_detail || fallback.brideFamilyDetail,
     groomFamilyTitle: row.groom_family_title || fallback.groomFamilyTitle,
     groomFamilyDetail: row.groom_family_detail || fallback.groomFamilyDetail,
+    gift: {
+      enabled: gift.enabled === true && Boolean(bankName && accountNumber && accountHolder),
+      bankName,
+      accountNumber,
+      accountHolder,
+    },
   }
 }
 

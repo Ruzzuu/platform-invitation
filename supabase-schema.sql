@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS invitations (
   bride_family_detail TEXT,
   groom_family_title TEXT,
   groom_family_detail TEXT,
+  gift JSONB NOT NULL DEFAULT '{"enabled":false}'::jsonb CHECK (jsonb_typeof(gift) = 'object'),
   expires_at TIMESTAMPTZ,
   archived_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -140,6 +141,7 @@ ALTER TABLE invitations ADD COLUMN IF NOT EXISTS bride_family_title TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS bride_family_detail TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS groom_family_title TEXT;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS groom_family_detail TEXT;
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS gift JSONB DEFAULT '{"enabled":false}'::jsonb;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS archived_at TIMESTAMPTZ;
 ALTER TABLE invitations ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
@@ -154,6 +156,7 @@ UPDATE invitations SET timezone = 'Asia/Jakarta' WHERE timezone IS NULL;
 UPDATE invitations SET location_label = '' WHERE location_label IS NULL;
 UPDATE invitations SET events = '[]'::jsonb WHERE events IS NULL;
 UPDATE invitations SET love_story = '[]'::jsonb WHERE love_story IS NULL;
+UPDATE invitations SET gift = '{"enabled":false}'::jsonb WHERE gift IS NULL;
 UPDATE invitations SET gallery_urls = '{}' WHERE gallery_urls IS NULL;
 UPDATE invitations SET created_at = NOW() WHERE created_at IS NULL;
 UPDATE invitations SET updated_at = NOW() WHERE updated_at IS NULL;
@@ -265,14 +268,16 @@ BEGIN
     VALUES
       ('Delta Gray', 'Modern monochrome invitation', 'A bold gray and black invitation design.', 'Modern', 'delta-gray', 'delta-gray', true, ARRAY['/gambar1.webp']),
       ('Pink Flower', 'Romantic floral invitation', 'A soft floral invitation with an animated opening.', 'Floral', 'pink-flower', 'pink-flower', true, ARRAY['/flower1.webp']),
-      ('Undangan Jawa', 'Traditional Javanese invitation', 'A dark gold Javanese design with wayang animation.', 'Classic', 'javanese', 'javanese', true, ARRAY['/jawa1.webp'])
+      ('Undangan Jawa', 'Traditional Javanese invitation', 'A dark gold Javanese design with wayang animation.', 'Classic', 'javanese', 'javanese', true, ARRAY['/jawa1.webp']),
+      ('Mahogany', 'Elegant mahogany invitation', 'An elegant ivory and mahogany invitation with editorial photography.', 'Classic', 'mahogany', 'mahogany', false, ARRAY['/templates/mahogany/couple.jpg', '/templates/mahogany/walk.jpg', '/templates/mahogany/rings.jpg'])
     ON CONFLICT (slug) DO UPDATE SET renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle;
   ELSE
     INSERT INTO templates (name, subtitle, description, style, slug, renderer_key, is_featured, images)
     VALUES
       ('Delta Gray', 'Modern monochrome invitation', 'A bold gray and black invitation design.', 'Modern', 'delta-gray', 'delta-gray', true, '["/gambar1.webp"]'::jsonb),
       ('Pink Flower', 'Romantic floral invitation', 'A soft floral invitation with an animated opening.', 'Floral', 'pink-flower', 'pink-flower', true, '["/flower1.webp"]'::jsonb),
-      ('Undangan Jawa', 'Traditional Javanese invitation', 'A dark gold Javanese design with wayang animation.', 'Classic', 'javanese', 'javanese', true, '["/jawa1.webp"]'::jsonb)
+      ('Undangan Jawa', 'Traditional Javanese invitation', 'A dark gold Javanese design with wayang animation.', 'Classic', 'javanese', 'javanese', true, '["/jawa1.webp"]'::jsonb),
+      ('Mahogany', 'Elegant mahogany invitation', 'An elegant ivory and mahogany invitation with editorial photography.', 'Classic', 'mahogany', 'mahogany', false, '["/templates/mahogany/couple.jpg", "/templates/mahogany/walk.jpg", "/templates/mahogany/rings.jpg"]'::jsonb)
     ON CONFLICT (slug) DO UPDATE SET renderer_key = EXCLUDED.renderer_key, description = EXCLUDED.description, subtitle = EXCLUDED.subtitle;
   END IF;
 END $$;
