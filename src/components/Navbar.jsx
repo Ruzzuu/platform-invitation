@@ -15,7 +15,12 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-cream-dark/90 backdrop-blur-md border-b border-cream-dark/60">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
-        <Link to="/" className="font-serif text-[20px] font-bold tracking-tight">
+        <Link to="/" className="flex items-center gap-2 font-serif text-[20px] font-bold tracking-tight">
+          <img
+            src="/favicon.jpeg"
+            alt="LembaranBaru"
+            className="h-8 w-8 rounded-lg object-cover"
+          />
           <span className="text-[#2B2B2B]">Lembaran</span><span className="text-[#D4537E]">Baru</span>
         </Link>
 
