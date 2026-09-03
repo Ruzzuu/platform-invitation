@@ -42,8 +42,8 @@ export default function HeroGallery() {
   const velocityFactor = useTransform(smoothVelocity, [-800, 0, 800], [8, 1, 8], { clamp: false })
 
   return (
-    /* ── 300vh scroll wrapper so the hero stays visible longer ── */
-    <div style={{ height: '300vh' }}>
+    /* Keep the hero to one viewport so the next section follows naturally. */
+    <div className="h-[calc(100vh-4rem)] min-h-[520px]">
       {/* ── Sticky container: stays pinned while user scrolls ── */}
       <section
         className="sticky top-16 h-[calc(100vh-4rem)] overflow-hidden bg-white"
